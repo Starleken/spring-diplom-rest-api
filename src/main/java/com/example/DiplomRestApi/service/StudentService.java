@@ -23,4 +23,16 @@ public class StudentService {
     public Student save(Student student){
         return studentRepository.save(student);
     }
+
+    public Student update(Student newStudent, Long id){
+        Student student = studentRepository.findById(id).get();
+
+        student.setGroup(newStudent.getGroup());
+        student.setUser(newStudent.getUser());
+        student.setEducationForm(newStudent.getEducationForm());
+        student.setResidentialAddress(newStudent.getResidentialAddress());
+        student.setRegistrationAddress(newStudent.getRegistrationAddress());
+
+        return studentRepository.save(student);
+    }
 }

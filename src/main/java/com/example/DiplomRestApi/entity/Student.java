@@ -10,7 +10,7 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "registrationAddress")
     private String registrationAddress;
@@ -26,14 +26,14 @@ public class Student {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "group_id")
     private Group group;
 
     public Student() {
     }
 
-    public Student(int id, String registrationAddress, String residentialAddress, EducationForm educationForm, User user, Group group) {
+    public Student(Long id, String registrationAddress, String residentialAddress, EducationForm educationForm, User user, Group group) {
         this.id = id;
         this.registrationAddress = registrationAddress;
         this.residentialAddress = residentialAddress;
@@ -42,11 +42,11 @@ public class Student {
         this.group = group;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -9,7 +9,6 @@ import java.util.List;
 
 @Service
 public class ActivityTypeService {
-
     private ActivityTypeRepository activityTypeRepository;
 
     @Autowired
