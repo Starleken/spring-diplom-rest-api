@@ -32,16 +32,27 @@ public class Activity {
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private ActivityType activityType;
 
+    @ManyToOne
+    @JoinColumn(name = "activityLevel_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private ActivityLevel activityLevel;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @OnDelete(action =  OnDeleteAction.CASCADE)
+    private User user;
+
     public Activity() {
     }
 
-    public Activity(Long id, String name, Date date, Integer place, String imageURL, ActivityType activityType) {
+    public Activity(Long id, String name, Date date, Integer place, String imageURL, ActivityType activityType, ActivityLevel activityLevel) {
         this.id = id;
         this.name = name;
         this.date = date;
         this.place = place;
         this.imageURL = imageURL;
         this.activityType = activityType;
+        this.activityLevel = activityLevel;
     }
 
     public Long getId() {
@@ -92,17 +103,25 @@ public class Activity {
         this.activityType = activityType;
     }
 
+    public ActivityLevel getActivityLevel() {
+        return activityLevel;
+    }
+
+    public void setActivityLevel(ActivityLevel activityLevel) {
+        this.activityLevel = activityLevel;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Activity activity = (Activity) o;
-        return Objects.equals(id, activity.id) && Objects.equals(name, activity.name) && Objects.equals(date, activity.date) && Objects.equals(place, activity.place) && Objects.equals(imageURL, activity.imageURL) && Objects.equals(activityType, activity.activityType);
+        return Objects.equals(id, activity.id) && Objects.equals(name, activity.name) && Objects.equals(date, activity.date) && Objects.equals(place, activity.place) && Objects.equals(imageURL, activity.imageURL) && Objects.equals(activityType, activity.activityType) && Objects.equals(activityLevel, activity.activityLevel);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, date, place, imageURL, activityType);
+        return Objects.hash(id, name, date, place, imageURL, activityType, activityLevel);
     }
 
     @Override
@@ -114,6 +133,7 @@ public class Activity {
                 ", place=" + place +
                 ", imageURL='" + imageURL + '\'' +
                 ", activityType=" + activityType +
+                ", activityLevel=" + activityLevel +
                 '}';
     }
 }

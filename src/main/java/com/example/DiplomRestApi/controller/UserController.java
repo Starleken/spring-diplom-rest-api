@@ -19,12 +19,12 @@ public class UserController {
 
     @GetMapping
     public List<User> getAll(){
-        return userService.getAll();
+        return userService.findAll();
     }
 
     @PostMapping
     public void create(@RequestBody User user){
-        userService.create(user);
+        userService.save(user);
     }
 
 }
