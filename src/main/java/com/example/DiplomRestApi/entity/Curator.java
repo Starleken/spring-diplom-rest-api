@@ -16,6 +16,10 @@ public class Curator {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "group_id")
+    public Group group;
+
     public Curator() {
     }
 

@@ -27,4 +27,9 @@ public class ActivityController {
     public Activity save(@RequestBody Activity activity){
         return activityService.save(activity);
     }
+
+    @PutMapping
+    public Activity update(@RequestBody Activity activity){
+        return activityService.update(activity);
+    }
 }

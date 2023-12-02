@@ -8,4 +8,6 @@ public interface ActivityService {
     public List<Activity> findAll();
 
     public Activity save(Activity activity);
+
+    public Activity update(Activity activity);
 }

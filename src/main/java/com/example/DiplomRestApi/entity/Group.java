@@ -14,17 +14,12 @@ public class Group {
     @Column(name = "name")
     public String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "curator_id")
-    public Curator curator;
-
     public Group() {
     }
 
     public Group(Long id, String name, Curator curator) {
         this.id = id;
         this.name = name;
-        this.curator = curator;
     }
 
     public Long getId() {
@@ -43,25 +38,17 @@ public class Group {
         this.name = name;
     }
 
-    public Curator getCurator() {
-        return curator;
-    }
-
-    public void setCurator(Curator curator) {
-        this.curator = curator;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Group group = (Group) o;
-        return Objects.equals(id, group.id) && Objects.equals(name, group.name) && Objects.equals(curator, group.curator);
+        return Objects.equals(id, group.id) && Objects.equals(name, group.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, curator);
+        return Objects.hash(id, name);
     }
 
     @Override
@@ -69,7 +56,6 @@ public class Group {
         return "Group{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", curator=" + curator +
                 '}';
     }
 }
