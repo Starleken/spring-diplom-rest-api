@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,5 +24,16 @@ public class UserServiceImpl implements UserService {
 
     public User save(User user){
         return userRepository.save(user);
+    }
+
+    @Override
+    public User findByLoginAndPassword(String login, String password) {
+        Optional<User> findedUser = userRepository.findByLoginAndPassword(login, password);
+
+        //TODO
+        if (findedUser.isEmpty()){
+            return null;
+        }
+        return findedUser.get();
     }
 }

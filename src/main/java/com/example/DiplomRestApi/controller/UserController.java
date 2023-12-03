@@ -27,4 +27,9 @@ public class UserController {
         userService.save(user);
     }
 
+    @GetMapping("/auth")
+    public User findByLoginAndPassword(@RequestParam String login, @RequestParam String password){
+        return userService.findByLoginAndPassword(login, password);
+    }
+
 }

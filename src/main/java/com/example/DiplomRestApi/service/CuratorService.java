@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface CuratorService {
     public List<Curator> findAll();
+
+    public Curator create(Curator curator);
+
+    public Curator update(Curator curator);
 }
