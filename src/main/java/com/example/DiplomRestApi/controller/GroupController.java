@@ -1,6 +1,6 @@
 package com.example.DiplomRestApi.controller;
 
-import com.example.DiplomRestApi.entity.Group;
+import com.example.DiplomRestApi.entity.GroupEntity;
 import com.example.DiplomRestApi.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +18,12 @@ public class GroupController {
     }
 
     @GetMapping
-    public List<Group> findAll(){
+    public List<GroupEntity> findAll(){
         return groupService.findAll();
     }
 
     @PostMapping
-    public Group save(@RequestBody Group group){
-        return groupService.save(group);
+    public GroupEntity save(@RequestBody GroupEntity groupEntity){
+        return groupService.save(groupEntity);
     }
 }

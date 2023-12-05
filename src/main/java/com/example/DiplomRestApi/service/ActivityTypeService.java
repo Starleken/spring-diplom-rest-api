@@ -1,9 +1,9 @@
 package com.example.DiplomRestApi.service;
 
-import com.example.DiplomRestApi.entity.ActivityType;
+import com.example.DiplomRestApi.entity.ActivityTypeEntity;
 
 import java.util.List;
 
 public interface ActivityTypeService {
-    public List<ActivityType> findAll();
+    public List<ActivityTypeEntity> findAll();
 }

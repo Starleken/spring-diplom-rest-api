@@ -1,6 +1,6 @@
 package com.example.DiplomRestApi.service.impl;
 
-import com.example.DiplomRestApi.entity.ActivityLevel;
+import com.example.DiplomRestApi.entity.ActivityLevelEntity;
 import com.example.DiplomRestApi.repository.ActivityLevelRepository;
 import com.example.DiplomRestApi.service.ActivityLevelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class ActivityLevelServiceImpl implements ActivityLevelService {
     }
 
     @Override
-    public List<ActivityLevel> findAll() {
+    public List<ActivityLevelEntity> findAll() {
         return activityLevelRepository.findAll();
     }
 }

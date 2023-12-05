@@ -1,6 +1,6 @@
 package com.example.DiplomRestApi.controller;
 
-import com.example.DiplomRestApi.entity.Student;
+import com.example.DiplomRestApi.entity.StudentEntity;
 import com.example.DiplomRestApi.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +18,27 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> findAll(){
+    public List<StudentEntity> findAll(){
         return studentService.findAll();
     }
 
+    @GetMapping(path = "/group")
+    public List<StudentEntity> findStudentsByGroup(@RequestParam Long groupId){
+        return studentService.findStudentsByGroup(groupId);
+    }
+
+    @GetMapping(path = "/user")
+    public StudentEntity findStudentByUser(@RequestParam Long userId){
+        return studentService.findStudentByUser(userId);
+    }
+
     @PostMapping
-    public Student save(@RequestBody Student student){
-        return studentService.save(student);
+    public StudentEntity save(@RequestBody StudentEntity studentEntity){
+        return studentService.save(studentEntity);
     }
 
     @PutMapping
-    public Student update(@RequestBody Student student){
-        return studentService.update(student);
+    public StudentEntity update(@RequestBody StudentEntity studentEntity){
+        return studentService.update(studentEntity);
     }
 }

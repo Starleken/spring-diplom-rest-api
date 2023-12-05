@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "students")
-public class Student {
+public class StudentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,20 +20,20 @@ public class Student {
 
     @ManyToOne()
     @JoinColumn(name = "educationForm_id")
-    private EducationForm educationForm;
+    private EducationFormEntity educationForm;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     @ManyToOne()
     @JoinColumn(name = "group_id")
-    private Group group;
+    private GroupEntity group;
 
-    public Student() {
+    public StudentEntity() {
     }
 
-    public Student(Long id, String registrationAddress, String residentialAddress, EducationForm educationForm, User user, Group group) {
+    public StudentEntity(Long id, String registrationAddress, String residentialAddress, EducationFormEntity educationForm, UserEntity user, GroupEntity group) {
         this.id = id;
         this.registrationAddress = registrationAddress;
         this.residentialAddress = residentialAddress;
@@ -66,36 +66,36 @@ public class Student {
         this.residentialAddress = residentialAddress;
     }
 
-    public EducationForm getEducationForm() {
+    public EducationFormEntity getEducationForm() {
         return educationForm;
     }
 
-    public void setEducationForm(EducationForm educationForm) {
-        this.educationForm = educationForm;
+    public void setEducationForm(EducationFormEntity educationFormEntity) {
+        this.educationForm = educationFormEntity;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(UserEntity userEntity) {
+        this.user = userEntity;
     }
 
-    public Group getGroup() {
+    public GroupEntity getGroup() {
         return group;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGroup(GroupEntity groupEntity) {
+        this.group = groupEntity;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
-        return id == student.id && Objects.equals(registrationAddress, student.registrationAddress) && Objects.equals(residentialAddress, student.residentialAddress) && Objects.equals(educationForm, student.educationForm) && Objects.equals(user, student.user) && Objects.equals(group, student.group);
+        StudentEntity studentEntity = (StudentEntity) o;
+        return id == studentEntity.id && Objects.equals(registrationAddress, studentEntity.registrationAddress) && Objects.equals(residentialAddress, studentEntity.residentialAddress) && Objects.equals(educationForm, studentEntity.educationForm) && Objects.equals(user, studentEntity.user) && Objects.equals(group, studentEntity.group);
     }
 
     @Override

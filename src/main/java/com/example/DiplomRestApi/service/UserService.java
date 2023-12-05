@@ -1,13 +1,13 @@
 package com.example.DiplomRestApi.service;
 
-import com.example.DiplomRestApi.entity.User;
+import com.example.DiplomRestApi.entity.UserEntity;
 
 import java.util.List;
 
 public interface UserService {
-    public List<User> findAll();
+    public List<UserEntity> findAll();
 
-    public User save(User user);
+    public UserEntity save(UserEntity userEntity);
 
-    public User findByLoginAndPassword(String login, String password);
+    public UserEntity findByLoginAndPassword(String login, String password);
 }

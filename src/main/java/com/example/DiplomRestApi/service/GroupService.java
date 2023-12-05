@@ -1,11 +1,11 @@
 package com.example.DiplomRestApi.service;
 
-import com.example.DiplomRestApi.entity.Group;
+import com.example.DiplomRestApi.entity.GroupEntity;
 
 import java.util.List;
 
 public interface GroupService {
-    public List<Group> findAll();
+    public List<GroupEntity> findAll();
 
-    public Group save(Group group);
+    public GroupEntity save(GroupEntity groupEntity);
 }

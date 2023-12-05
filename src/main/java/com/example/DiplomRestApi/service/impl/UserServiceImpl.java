@@ -1,6 +1,6 @@
 package com.example.DiplomRestApi.service.impl;
 
-import com.example.DiplomRestApi.entity.User;
+import com.example.DiplomRestApi.entity.UserEntity;
 import com.example.DiplomRestApi.repository.UserRepository;
 import com.example.DiplomRestApi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +18,17 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> findAll(){
+    public List<UserEntity> findAll(){
         return userRepository.findAll();
     }
 
-    public User save(User user){
-        return userRepository.save(user);
+    public UserEntity save(UserEntity userEntity){
+        return userRepository.save(userEntity);
     }
 
     @Override
-    public User findByLoginAndPassword(String login, String password) {
-        Optional<User> findedUser = userRepository.findByLoginAndPassword(login, password);
+    public UserEntity findByLoginAndPassword(String login, String password) {
+        Optional<UserEntity> findedUser = userRepository.findByLoginAndPassword(login, password);
 
         //TODO
         if (findedUser.isEmpty()){

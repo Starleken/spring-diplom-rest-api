@@ -1,11 +1,10 @@
 package com.example.DiplomRestApi.service;
 
-import com.example.DiplomRestApi.entity.ActivityLevel;
-import org.springframework.stereotype.Service;
+import com.example.DiplomRestApi.entity.ActivityLevelEntity;
 
 import java.util.List;
 
 public interface ActivityLevelService {
 
-    public List<ActivityLevel> findAll();
+    public List<ActivityLevelEntity> findAll();
 }

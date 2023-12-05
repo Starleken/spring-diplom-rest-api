@@ -1,6 +1,6 @@
 package com.example.DiplomRestApi.controller;
 
-import com.example.DiplomRestApi.entity.User;
+import com.example.DiplomRestApi.entity.UserEntity;
 import com.example.DiplomRestApi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +18,17 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAll(){
+    public List<UserEntity> getAll(){
         return userService.findAll();
     }
 
     @PostMapping
-    public void create(@RequestBody User user){
-        userService.save(user);
+    public void create(@RequestBody UserEntity userEntity){
+        userService.save(userEntity);
     }
 
     @GetMapping("/auth")
-    public User findByLoginAndPassword(@RequestParam String login, @RequestParam String password){
+    public UserEntity findByLoginAndPassword(@RequestParam String login, @RequestParam String password){
         return userService.findByLoginAndPassword(login, password);
     }
 

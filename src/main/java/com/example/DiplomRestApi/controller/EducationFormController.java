@@ -1,6 +1,6 @@
 package com.example.DiplomRestApi.controller;
 
-import com.example.DiplomRestApi.entity.EducationForm;
+import com.example.DiplomRestApi.entity.EducationFormEntity;
 import com.example.DiplomRestApi.service.EducationFormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ public class EducationFormController {
     }
 
     @GetMapping
-    public List<EducationForm> findAll(){
+    public List<EducationFormEntity> findAll(){
         return service.findAll();
     }
 }

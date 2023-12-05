@@ -1,6 +1,6 @@
 package com.example.DiplomRestApi.controller;
 
-import com.example.DiplomRestApi.entity.ActivityType;
+import com.example.DiplomRestApi.entity.ActivityTypeEntity;
 import com.example.DiplomRestApi.service.ActivityTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,7 @@ public class ActivityTypeController {
     }
 
     @GetMapping
-    public List<ActivityType> findAll(){
+    public List<ActivityTypeEntity> findAll(){
         return activityTypeService.findAll();
     }
 }

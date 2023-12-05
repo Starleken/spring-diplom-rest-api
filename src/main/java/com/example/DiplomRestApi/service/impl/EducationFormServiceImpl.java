@@ -1,6 +1,6 @@
 package com.example.DiplomRestApi.service.impl;
 
-import com.example.DiplomRestApi.entity.EducationForm;
+import com.example.DiplomRestApi.entity.EducationFormEntity;
 import com.example.DiplomRestApi.repository.EducationFormRepository;
 import com.example.DiplomRestApi.service.EducationFormService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class EducationFormServiceImpl implements EducationFormService {
     }
 
     @Override
-    public List<EducationForm> findAll(){
+    public List<EducationFormEntity> findAll(){
         return educationFormRepository.findAll();
     }
 }

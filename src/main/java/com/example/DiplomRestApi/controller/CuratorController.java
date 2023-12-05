@@ -1,6 +1,6 @@
 package com.example.DiplomRestApi.controller;
 
-import com.example.DiplomRestApi.entity.Curator;
+import com.example.DiplomRestApi.entity.CuratorEntity;
 import com.example.DiplomRestApi.service.CuratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +18,22 @@ public class CuratorController {
     }
 
     @GetMapping
-    public List<Curator> findAll(){
+    public List<CuratorEntity> findAll(){
         return curatorService.findAll();
     }
 
+    @GetMapping("/user")
+    public CuratorEntity findCuratorByUser(@RequestParam Long userId){
+        return curatorService.findCuratorByUser(userId);
+    }
+
     @PostMapping
-    public Curator create(@RequestBody Curator curator){
-        return curatorService.create(curator);
+    public CuratorEntity create(@RequestBody CuratorEntity curatorEntity){
+        return curatorService.create(curatorEntity);
     }
 
     @PutMapping
-    public Curator update(@RequestBody Curator curator){
-        return curatorService.update(curator);
+    public CuratorEntity update(@RequestBody CuratorEntity curatorEntity){
+        return curatorService.update(curatorEntity);
     }
 }

@@ -1,13 +1,15 @@
 package com.example.DiplomRestApi.service;
 
-import com.example.DiplomRestApi.entity.Activity;
+import com.example.DiplomRestApi.entity.ActivityEntity;
 
 import java.util.List;
 
 public interface ActivityService {
-    public List<Activity> findAll();
+    public List<ActivityEntity> findAll();
 
-    public Activity save(Activity activity);
+    public ActivityEntity save(ActivityEntity activityEntity);
 
-    public Activity update(Activity activity);
+    public ActivityEntity update(ActivityEntity activityEntity);
+
+    public List<ActivityEntity> findActivitiesByUser(long userId);
 }

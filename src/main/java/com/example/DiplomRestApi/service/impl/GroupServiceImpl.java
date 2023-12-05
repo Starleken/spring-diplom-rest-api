@@ -1,6 +1,6 @@
 package com.example.DiplomRestApi.service.impl;
 
-import com.example.DiplomRestApi.entity.Group;
+import com.example.DiplomRestApi.entity.GroupEntity;
 import com.example.DiplomRestApi.repository.GroupRepository;
 import com.example.DiplomRestApi.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,11 @@ public class GroupServiceImpl implements GroupService {
         this.groupRepository = groupRepository;
     }
 
-    public List<Group> findAll(){
+    public List<GroupEntity> findAll(){
         return groupRepository.findAll();
     }
 
-    public Group save(Group group){
-        return groupRepository.save(group);
+    public GroupEntity save(GroupEntity groupEntity){
+        return groupRepository.save(groupEntity);
     }
 }

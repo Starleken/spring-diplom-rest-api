@@ -1,7 +1,9 @@
 package com.example.DiplomRestApi.service.impl;
 
-import com.example.DiplomRestApi.entity.Activity;
+import com.example.DiplomRestApi.entity.ActivityEntity;
+import com.example.DiplomRestApi.entity.UserEntity;
 import com.example.DiplomRestApi.repository.ActivityRepository;
+import com.example.DiplomRestApi.repository.UserRepository;
 import com.example.DiplomRestApi.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,40 +14,56 @@ import java.util.Optional;
 @Service
 public class ActivityServiceImpl implements ActivityService {
     private ActivityRepository activityRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public ActivityServiceImpl(ActivityRepository activityRepository) {
+    public ActivityServiceImpl(ActivityRepository activityRepository, UserRepository userRepository) {
         this.activityRepository = activityRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public List<Activity> findAll(){
+    public List<ActivityEntity> findAll(){
         return activityRepository.findAll();
     }
 
     @Override
-    public Activity save(Activity activity) {
-        return activityRepository.save(activity);
+    public ActivityEntity save(ActivityEntity activityEntity) {
+        return activityRepository.save(activityEntity);
     }
 
     @Override
-    public Activity update(Activity activity){
-        Optional<Activity> activityToChange = activityRepository.findById(activity.getId());
+    public ActivityEntity update(ActivityEntity activityEntity){
+        Optional<ActivityEntity> activityToChange = activityRepository.findById(activityEntity.getId());
 
         //TODO
         if (activityToChange.isEmpty()){
             return null;
         }
 
-        Activity activityToSave = activityToChange.get();
+        ActivityEntity activityEntityToSave = activityToChange.get();
 
-        activityToSave.setDate(activity.getDate());
-        activityToSave.setActivityType(activity.getActivityType());
-        activityToSave.setActivityLevel(activity.getActivityLevel());
-        activityToSave.setName(activity.getName());
-        activityToSave.setPlace(activity.getPlace());
-        activityToSave.setImageURL(activity.getImageURL());
+        activityEntityToSave.setDate(activityEntity.getDate());
+        activityEntityToSave.setActivityType(activityEntity.getActivityType());
+        activityEntityToSave.setActivityLevel(activityEntity.getActivityLevel());
+        activityEntityToSave.setName(activityEntity.getName());
+        activityEntityToSave.setPlace(activityEntity.getPlace());
+        activityEntityToSave.setImageURL(activityEntity.getImageURL());
 
-        return activityRepository.save(activityToSave);
+        return activityRepository.save(activityEntityToSave);
     }
+
+    @Override
+    public List<ActivityEntity> findActivitiesByUser(long userId) {
+        Optional<UserEntity> findedUser = userRepository.findById(userId);
+
+        //TODO
+        if (findedUser.isEmpty()){
+            return null;
+        }
+
+        return activityRepository.findActivitiesByUser(findedUser.get());
+    }
+
+
 }

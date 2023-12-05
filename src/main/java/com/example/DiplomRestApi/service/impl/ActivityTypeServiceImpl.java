@@ -1,6 +1,6 @@
 package com.example.DiplomRestApi.service.impl;
 
-import com.example.DiplomRestApi.entity.ActivityType;
+import com.example.DiplomRestApi.entity.ActivityTypeEntity;
 import com.example.DiplomRestApi.repository.ActivityTypeRepository;
 import com.example.DiplomRestApi.service.ActivityTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class ActivityTypeServiceImpl implements ActivityTypeService {
     }
 
     @Override
-    public List<ActivityType> findAll(){
+    public List<ActivityTypeEntity> findAll(){
         return activityTypeRepository.findAll();
     }
 }
