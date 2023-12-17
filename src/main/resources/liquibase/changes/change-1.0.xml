@@ -1,0 +1,183 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1.0.0" author="Starleken">
+        <sql>
+            create table activity_levels
+            (
+                id   bigint auto_increment
+                    primary key,
+                name varchar(255) null
+            );
+        </sql>
+
+        <sql>
+            create table activity_types
+            (
+                id   bigint auto_increment
+                    primary key,
+                name varchar(255) not null
+            );
+        </sql>
+
+        <sql>
+            create table education_forms
+            (
+                id   bigint auto_increment
+                    primary key,
+                name varchar(255) not null
+            );
+        </sql>
+
+        <sql>
+            create table `groups`
+            (
+                id   bigint auto_increment
+                    primary key,
+                name varchar(255) null
+            );
+        </sql>
+
+        <sql>
+            create table roles
+            (
+                id   bigint auto_increment
+                    primary key,
+                name varchar(255) not null
+            );
+        </sql>
+
+        <sql>
+            create table persons
+            (
+                id         bigint auto_increment
+                    primary key,
+                name       varchar(255) not null,
+                patronymic varchar(255) null,
+                surname    varchar(255) not null
+            );
+        </sql>
+
+        <sql>
+            create table users
+            (
+                id        bigint auto_increment
+                    primary key,
+                login     varchar(255) null,
+                password  varchar(255) null,
+                person_id bigint       not null,
+                role_id   bigint       not null,
+                constraint FKmvbq8q4vpi6csivw9wcnq6ho5
+                    foreign key (person_id) references persons (id)
+                        on delete cascade,
+                constraint FKp56c1712k691lhsyewcssf40f
+                    foreign key (role_id) references roles (id)
+                        on delete cascade
+            );
+        </sql>
+
+        <sql>
+            create table students
+            (
+                id                   bigint auto_increment
+                    primary key,
+                registration_address varchar(255) null,
+                residential_address  varchar(255) null,
+                education_form_id    bigint       null,
+                group_id             bigint       null,
+                user_id              bigint       null,
+                constraint FK1u7j76uoqf4wxwqc8nmwhquq7
+                    foreign key (education_form_id) references education_forms (id),
+                constraint FKdt1cjx5ve5bdabmuuf3ibrwaq
+                    foreign key (user_id) references users (id),
+                constraint FKfob3k6rgxnlssnrcy55yuxfkl
+                    foreign key (group_id) references `groups` (id)
+            );
+        </sql>
+
+        <sql>
+            create table passports
+            (
+                id         bigint auto_increment
+                    primary key,
+                imageurl   varchar(255) null,
+                number     varchar(255) not null,
+                series     varchar(255) not null,
+                student_id bigint       null,
+                constraint FKlx3js7jwb3dk8gjaa0ch7aa76
+                    foreign key (student_id) references students (id)
+                        on delete cascade
+            );
+        </sql>
+
+        <sql>
+            create table curators
+            (
+                id       bigint auto_increment
+                    primary key,
+                user_id  bigint null,
+                group_id bigint null,
+                constraint FK5r4j2i9ppmhd6gifx7xa61gsx
+                    foreign key (user_id) references users (id),
+                constraint FKt063mnly9ag9xrmpg3hn9q7d
+                    foreign key (group_id) references `groups` (id)
+            );
+        </sql>
+
+        <sql>
+            create table activities
+            (
+                id                bigint auto_increment
+                    primary key,
+                date              date         null,
+                imageurl          varchar(255) null,
+                name              varchar(255) not null,
+                place             int          not null,
+                activity_type_id  bigint       null,
+                activity_level_id bigint       null,
+                user_id           bigint       null,
+                constraint FK9y4tob28y3dslhftgbcb22d94
+                    foreign key (activity_type_id) references activity_types (id)
+                        on delete set null,
+                constraint FKd5u99t5emh0j3mxh8rem82he9
+                    foreign key (activity_level_id) references activity_levels (id)
+                        on delete set null,
+                constraint FKq6cjukylkgxdjkm9npk9va2f2
+                    foreign key (user_id) references users (id)
+                        on delete cascade
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="1.0.1" author="Starleken">
+        <sql>
+            insert into activity_levels (name) values ('Университетский');
+            insert into activity_levels (name) values ('Городской');
+            insert into activity_levels (name) values ('Региональный');
+            insert into activity_levels (name) values ('Всероссийский');
+            insert into activity_levels (name) values ('Международный');
+        </sql>
+
+        <sql>
+            insert into activity_types (name) values ('Научный');
+        </sql>
+
+        <sql>
+            insert into roles (name) values ('Администратор');
+            insert into roles (name) values ('Куратор');
+            insert into roles (name) values ('Студент');
+        </sql>
+
+        <sql>
+            insert into education_forms (name) values ('Очный');
+            insert into education_forms (name) values ('Заочный');
+        </sql>
+
+        <sql>
+            insert into `groups` (name) values ('И-42');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

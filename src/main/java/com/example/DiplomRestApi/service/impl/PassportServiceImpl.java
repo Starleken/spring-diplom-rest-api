@@ -30,7 +30,7 @@ public class PassportServiceImpl implements PassportService {
 
     @Override
     public List<PassportFullDTO> findAll() {
-        return passportMapper.mapPassportListToDtos(passportRepository.findAll());
+        return passportMapper.mapToDtoList(passportRepository.findAll());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class PassportServiceImpl implements PassportService {
             return null;
         }
 
-        return passportMapper.mapPassportListToDtos(passportRepository.findAllByStudent(findedStudent.get()));
+        return passportMapper.mapToDtoList(passportRepository.findAllByStudent(findedStudent.get()));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PassportServiceImpl implements PassportService {
             return null;
         }
 
-        PassportEntity passport = passportMapper.mapToEntity(passportToSaveDto, student.get());
+        PassportEntity passport = passportMapper.mapToEntity(passportToSaveDto);
 
         PassportEntity savedPassport = passportRepository.save(passport);
 

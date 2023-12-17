@@ -1,0 +1,79 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1.0.0" author="Starleken">
+        <sql>
+            create table medical_policies
+            (
+                id         bigint auto_increment,
+                number     varchar(50)  not null,
+                id_student bigint       not null,
+                imageURL   varchar(250) null,
+                constraint medical_policies_pk
+                    primary key (id),
+                constraint medical_policies_students_id_fk
+                    foreign key (id_student) references students (id)
+            );
+        </sql>
+
+        <sql>
+            create table snils
+            (
+                id         bigint auto_increment,
+                number     varchar(50)  not null,
+                id_student bigint       not null,
+                imageURL   varchar(250) null,
+                constraint snils_pk
+                    primary key (id),
+                constraint snils_students_id_fk
+                    foreign key (id_student) references students (id)
+            );
+        </sql>
+
+        <sql>
+            create table inn
+            (
+                id         bigint auto_increment,
+                number     varchar(50)  not null,
+                id_student bigint       not null,
+                imageURL   varchar(250) null,
+                constraint inn_pk
+                    primary key (id),
+                constraint inn_students_id_fk
+                    foreign key (id_student) references students (id)
+            );
+        </sql>
+
+        <sql>
+            create table fluorographies
+            (
+                id         bigint auto_increment,
+                number     varchar(50)  not null,
+                create_date date        not null,
+                id_student bigint       not null,
+                imageURL   varchar(250) null,
+                constraint fluorography_pk
+                    primary key (id),
+                constraint fluorography_students_id_fk
+                    foreign key (id_student) references students (id)
+            );
+        </sql>
+
+        <sql>
+            create table flu_vaccines
+            (
+                id         bigint auto_increment,
+                create_date date        not null,
+                id_student bigint       not null,
+                imageURL   varchar(250) null,
+                constraint flu_vaccines_pk
+                    primary key (id),
+                constraint flu_vaccines_id_fk
+                    foreign key (id_student) references students (id)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
