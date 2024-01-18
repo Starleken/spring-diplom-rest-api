@@ -1,10 +1,15 @@
 package com.example.DiplomRestApi.service.impl;
 
+import com.example.DiplomRestApi.dto.fluVaccine.FluVaccineCreateDto;
+import com.example.DiplomRestApi.dto.fluVaccine.FluVaccineUpdateDto;
 import com.example.DiplomRestApi.entity.FluVaccineEntity;
 import com.example.DiplomRestApi.entity.StudentEntity;
+import com.example.DiplomRestApi.exception.EntityNotFoundException;
+import com.example.DiplomRestApi.mapper.FluVaccineMapper;
 import com.example.DiplomRestApi.repository.FluVaccineRepository;
 import com.example.DiplomRestApi.repository.StudentRepository;
 import com.example.DiplomRestApi.service.FluVaccineService;
+import com.example.DiplomRestApi.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +22,10 @@ public class FluVaccineServiceImpl implements FluVaccineService {
 
     private final FluVaccineRepository fluVaccineRepository;
     private final StudentRepository studentRepository;
+
+    private final ImageService imageService;
+
+    private final FluVaccineMapper mapper;
 
     @Override
     public List<FluVaccineEntity> findAll() {
@@ -36,30 +45,53 @@ public class FluVaccineServiceImpl implements FluVaccineService {
     }
 
     @Override
-    public FluVaccineEntity create(FluVaccineEntity entity) {
-        return fluVaccineRepository.save(entity);
+    public FluVaccineEntity create(FluVaccineCreateDto createDto) {
+        FluVaccineEntity fluVaccine = mapper.mapToEntity(createDto);
+
+        Optional<StudentEntity> findedStudent = studentRepository.findById(
+                createDto.getStudentId());
+
+        if (findedStudent.isEmpty()){
+            throw new EntityNotFoundException("Student is not found");
+        }
+        fluVaccine.setStudent(findedStudent.get());
+
+        String imageUrl = imageService.saveImage(createDto.getImage());
+        fluVaccine.setImageURL(imageUrl);
+
+        return fluVaccineRepository.save(fluVaccine);
     }
 
     @Override
-    public FluVaccineEntity update(FluVaccineEntity entity) {
+    public FluVaccineEntity update(FluVaccineUpdateDto updateDto) {
         Optional<FluVaccineEntity> findedEntity = fluVaccineRepository.
-                findById(entity.getId());
+                findById(updateDto.getId());
 
-        //TODO
         if (findedEntity.isEmpty()){
-            return null;
+            throw new EntityNotFoundException("FluVaccine is not found");
         }
 
         FluVaccineEntity entityToUpdate = findedEntity.get();
-        entityToUpdate.setCreateDate(entity.getCreateDate());
-        entityToUpdate.setImageURL(entity.getImageURL());
+        entityToUpdate.setCreateDate(updateDto.getCreateDate());
+
+        if (updateDto.getImage() != null){
+            imageService.deleteImage(entityToUpdate.getImageURL());
+            String imageUrl = imageService.saveImage(updateDto.getImage());
+            entityToUpdate.setImageURL(imageUrl);
+        }
 
         return fluVaccineRepository.save(entityToUpdate);
     }
 
     @Override
     public void delete(Long id) {
-        //TODO
+        Optional<FluVaccineEntity> fluVaccine = fluVaccineRepository.findById(id);
+
+        if (fluVaccine.isEmpty()){
+            throw new EntityNotFoundException("Vaccine is not found");
+        }
+
+        imageService.deleteImage(fluVaccine.get().getImageURL());
         fluVaccineRepository.deleteById(id);
     }
 }

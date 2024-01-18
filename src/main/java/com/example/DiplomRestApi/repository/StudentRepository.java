@@ -13,4 +13,5 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
     public List<StudentEntity> findStudentsByGroup(GroupEntity groupEntity);
 
     public StudentEntity findStudentByUser(UserEntity userEntity);
+
 }

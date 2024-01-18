@@ -1,9 +1,17 @@
 package com.example.DiplomRestApi.service.impl;
 
+import com.example.DiplomRestApi.dto.inn.InnCreateDto;
+import com.example.DiplomRestApi.dto.inn.InnUpdateDto;
 import com.example.DiplomRestApi.entity.InnEntity;
+import com.example.DiplomRestApi.entity.StudentEntity;
+import com.example.DiplomRestApi.exception.EntityNotFoundException;
+import com.example.DiplomRestApi.mapper.InnMapper;
 import com.example.DiplomRestApi.repository.InnRepository;
+import com.example.DiplomRestApi.repository.StudentRepository;
+import com.example.DiplomRestApi.service.ImageService;
 import com.example.DiplomRestApi.service.InnService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +22,11 @@ import java.util.Optional;
 public class InnServiceImpl implements InnService {
 
     private final InnRepository innRepository;
+    private final StudentRepository studentRepository;
+
+    private final ImageService imageService;
+
+    private final InnMapper mapper;
 
     @Override
     public List<InnEntity> findAll() {
@@ -21,29 +34,64 @@ public class InnServiceImpl implements InnService {
     }
 
     @Override
-    public InnEntity create(InnEntity entity) {
-        return innRepository.save(entity);
+    public List<InnEntity> findAllByStudent(Long studentId){
+        Optional<StudentEntity> findedStudent = studentRepository.findById(studentId);
+
+        if (findedStudent.isEmpty()){
+            throw new EntityNotFoundException("Student is not found");
+        }
+
+        return innRepository.findAllByStudent(findedStudent.get());
     }
 
     @Override
-    public InnEntity update(InnEntity entity) {
-        Optional<InnEntity> findedEntity = innRepository
-                .findById(entity.getId());
+    public InnEntity create(InnCreateDto createDto) {
+        InnEntity inn = mapper.mapToEntity(createDto);
 
-        //TODO
+        Optional<StudentEntity> findedStudent = studentRepository.findById(
+                createDto.getStudentId());
+
+        if (findedStudent.isEmpty()){
+            throw new EntityNotFoundException("student is not found");
+        }
+        inn.setStudent(findedStudent.get());
+
+        String imageUrl = imageService.saveImage(createDto.getImage());
+        inn.setImageURL(imageUrl);
+
+        return innRepository.save(inn);
+    }
+
+    @Override
+    public InnEntity update(InnUpdateDto updateDto) {
+        Optional<InnEntity> findedEntity = innRepository
+                .findById(updateDto.getId());
+
         if (findedEntity.isEmpty()){
-            return null;
+            throw new EntityNotFoundException("inn is not found");
         }
 
         InnEntity entityToUpdate = findedEntity.get();
-        entityToUpdate.setNumber(entity.getNumber());
-        entityToUpdate.setImageURL(entity.getImageURL());
+        entityToUpdate.setNumber(updateDto.getNumber());
 
-        return entityToUpdate;
+        if (updateDto.getImage() != null){
+            imageService.deleteImage(entityToUpdate.getImageURL());
+            String imageUrl = imageService.saveImage(updateDto.getImage());
+            entityToUpdate.setImageURL(imageUrl);
+        }
+
+        return innRepository.save(entityToUpdate);
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteById(Long id) {
+        Optional<InnEntity> inn = innRepository.findById(id);
+
+        if (inn.isEmpty()){
+            throw new EntityNotFoundException("Inn is not found");
+        }
+
+        imageService.deleteImage(inn.get().getImageURL());
         innRepository.deleteById(id);
     }
 }

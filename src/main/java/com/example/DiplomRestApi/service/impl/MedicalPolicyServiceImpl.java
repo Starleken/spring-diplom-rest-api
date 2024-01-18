@@ -1,9 +1,14 @@
 package com.example.DiplomRestApi.service.impl;
 
+import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyCreateDto;
+import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyUpdateDto;
 import com.example.DiplomRestApi.entity.MedicalPolicyEntity;
 import com.example.DiplomRestApi.entity.StudentEntity;
+import com.example.DiplomRestApi.exception.EntityNotFoundException;
+import com.example.DiplomRestApi.mapper.MedicalPolicyMapper;
 import com.example.DiplomRestApi.repository.MedicalPolicyRepository;
 import com.example.DiplomRestApi.repository.StudentRepository;
+import com.example.DiplomRestApi.service.ImageService;
 import com.example.DiplomRestApi.service.MedicalPolicyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +22,10 @@ public class MedicalPolicyServiceImpl implements MedicalPolicyService {
 
     private final MedicalPolicyRepository medicalPolicyRepository;
     private final StudentRepository studentRepository;
+
+    private final ImageService imageService;
+
+    private final MedicalPolicyMapper mapper;
 
     @Override
     public List<MedicalPolicyEntity> findAll() {
@@ -36,30 +45,54 @@ public class MedicalPolicyServiceImpl implements MedicalPolicyService {
     }
 
     @Override
-    public MedicalPolicyEntity create(MedicalPolicyEntity entity) {
-        return medicalPolicyRepository.save(entity);
+    public MedicalPolicyEntity create(MedicalPolicyCreateDto createDto) {
+        MedicalPolicyEntity medicalPolicy = mapper.mapToEntity(createDto);
+
+        Optional<StudentEntity> findedStudent = studentRepository.findById(
+                createDto.getStudentId());
+
+        if (findedStudent.isEmpty()){
+            throw new EntityNotFoundException("Student is not found");
+        }
+        medicalPolicy.setStudent(findedStudent.get());
+
+        String imageUrl = imageService.saveImage(createDto.getImage());
+        medicalPolicy.setImageURL(imageUrl);
+
+        return medicalPolicyRepository.save(medicalPolicy);
     }
 
     @Override
-    public MedicalPolicyEntity update(MedicalPolicyEntity entity) {
+    public MedicalPolicyEntity update(MedicalPolicyUpdateDto updateDto) {
         Optional<MedicalPolicyEntity> findedEntity = medicalPolicyRepository.
-                findById(entity.getId());
+                findById(updateDto.getId());
 
         //TODO
         if (findedEntity.isEmpty()){
-            return null;
+            throw new EntityNotFoundException("Medical policy is not found");
         }
 
         MedicalPolicyEntity entityToUpdate = findedEntity.get();
-        entityToUpdate.setNumber(entity.getNumber());
-        entityToUpdate.setImageURL(entity.getImageURL());
+        entityToUpdate.setNumber(updateDto.getNumber());
+
+        if (updateDto.getImage() != null){
+            imageService.deleteImage(entityToUpdate.getImageURL());
+            String imageUrl = imageService.saveImage(updateDto.getImage());
+            entityToUpdate.setImageURL(imageUrl);
+        }
 
         return medicalPolicyRepository.save(entityToUpdate);
     }
 
     @Override
-    public void delete(Long id) {
-        //TODO
+    public void deleteById(Long id) {
+        Optional<MedicalPolicyEntity> medicalPolicy = medicalPolicyRepository.findById(id);
+
+        if (medicalPolicy.isEmpty()){
+            throw new EntityNotFoundException("Medical policy is not found");
+        }
+
+        imageService.deleteImage(medicalPolicy.get().getImageURL());
         medicalPolicyRepository.deleteById(id);
     }
 }

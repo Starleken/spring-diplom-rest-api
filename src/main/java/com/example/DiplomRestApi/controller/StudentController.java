@@ -1,44 +1,55 @@
 package com.example.DiplomRestApi.controller;
 
+import com.example.DiplomRestApi.dto.student.StudentCreateDto;
+import com.example.DiplomRestApi.dto.student.StudentFullDto;
+import com.example.DiplomRestApi.dto.student.StudentUpdateDto;
 import com.example.DiplomRestApi.entity.StudentEntity;
 import com.example.DiplomRestApi.service.StudentService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/student")
+@RequestMapping("student")
+@RequiredArgsConstructor
 public class StudentController {
-    private StudentService studentService;
 
-    @Autowired
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
+    private final StudentService studentService;
 
     @GetMapping
-    public List<StudentEntity> findAll(){
-        return studentService.findAll();
+    public ResponseEntity<List<StudentFullDto>> findAll(){
+        return new ResponseEntity<>(studentService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/group")
-    public List<StudentEntity> findStudentsByGroup(@RequestParam Long groupId){
-        return studentService.findStudentsByGroup(groupId);
+    public ResponseEntity<List<StudentFullDto>> findStudentsByGroup(@RequestParam Long groupId){
+        return new ResponseEntity<>(studentService.findStudentsByGroup(groupId), HttpStatus.OK);
     }
 
     @GetMapping(path = "/user")
-    public StudentEntity findStudentByUser(@RequestParam Long userId){
-        return studentService.findStudentByUser(userId);
+    public ResponseEntity<StudentFullDto> findStudentByUser(@RequestParam Long userId){
+        return new ResponseEntity<>(studentService.findStudentByUser(userId), HttpStatus.OK);
     }
 
     @PostMapping
-    public StudentEntity save(@RequestBody StudentEntity studentEntity){
-        return studentService.save(studentEntity);
+    public ResponseEntity<StudentFullDto> create(@RequestBody StudentCreateDto createDto){
+        return new ResponseEntity<>(studentService.create(createDto), HttpStatus.OK);
     }
 
     @PutMapping
-    public StudentEntity update(@RequestBody StudentEntity studentEntity){
-        return studentService.update(studentEntity);
+    public ResponseEntity<StudentFullDto> update(@RequestBody StudentUpdateDto updateDto){
+        return new ResponseEntity<>(studentService.update(updateDto), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id){
+        studentService.deleteById(id);
     }
 }

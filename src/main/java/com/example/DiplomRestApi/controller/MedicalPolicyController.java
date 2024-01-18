@@ -1,18 +1,17 @@
 package com.example.DiplomRestApi.controller;
 
+import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyCreateDto;
+import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyUpdateDto;
 import com.example.DiplomRestApi.entity.MedicalPolicyEntity;
 import com.example.DiplomRestApi.service.MedicalPolicyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "api/v1/medicalPolicy")
+@RequestMapping(path = "medicalPolicy")
 public class MedicalPolicyController {
 
     private final MedicalPolicyService medicalPolicyService;
@@ -23,12 +22,22 @@ public class MedicalPolicyController {
     }
 
     @GetMapping("/student")
-    public List<MedicalPolicyEntity> findAllByStudent(Long studentId){
+    public List<MedicalPolicyEntity> findAllByStudent(@RequestParam Long studentId){
         return medicalPolicyService.findAllByStudent(studentId);
     }
 
     @PostMapping()
-    public MedicalPolicyEntity create(MedicalPolicyEntity entity){
-        return medicalPolicyService.create(entity);
+    public MedicalPolicyEntity create(@ModelAttribute MedicalPolicyCreateDto createDto){
+        return medicalPolicyService.create(createDto);
+    }
+
+    @PutMapping()
+    public MedicalPolicyEntity update(@ModelAttribute MedicalPolicyUpdateDto updateDto){
+        return medicalPolicyService.update(updateDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable long id){
+        medicalPolicyService.deleteById(id);
     }
 }

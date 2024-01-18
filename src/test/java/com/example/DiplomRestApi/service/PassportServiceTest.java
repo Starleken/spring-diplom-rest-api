@@ -1,10 +1,9 @@
 package com.example.DiplomRestApi.service;
 
-import com.example.DiplomRestApi.dto.passport.PassportCreateDTO;
-import com.example.DiplomRestApi.dto.passport.PassportFullDTO;
+import com.example.DiplomRestApi.dto.passport.PassportCreateDto;
+import com.example.DiplomRestApi.dto.passport.PassportFullDto;
 import com.example.DiplomRestApi.entity.StudentEntity;
 import com.example.DiplomRestApi.repository.StudentRepository;
-import com.example.DiplomRestApi.service.PassportService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,15 +27,15 @@ public class PassportServiceTest {
 
     @Test
     void create_happyPath() {
-        PassportCreateDTO passportToSaveDto = generatePassportDTO();
+        PassportCreateDto passportToSaveDto = generatePassportDTO();
 
-        PassportFullDTO savedPassportDto = passportService.create(passportToSaveDto);
+        PassportFullDto savedPassportDto = passportService.create(passportToSaveDto);
 
         Assertions.assertNotNull(savedPassportDto.getId());
     }
 
-    private PassportCreateDTO generatePassportDTO(){
-        PassportCreateDTO passport = new PassportCreateDTO();
+    private PassportCreateDto generatePassportDTO(){
+        PassportCreateDto passport = new PassportCreateDto();
 
         StudentEntity findedStudent = studentRepository.findAll().get(0);
 

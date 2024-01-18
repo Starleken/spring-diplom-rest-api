@@ -1,18 +1,22 @@
 package com.example.DiplomRestApi.mapper;
 
-import com.example.DiplomRestApi.dto.passport.PassportCreateDTO;
-import com.example.DiplomRestApi.dto.passport.PassportFullDTO;
+import com.example.DiplomRestApi.dto.passport.PassportCreateDto;
+import com.example.DiplomRestApi.dto.passport.PassportFullDto;
 import com.example.DiplomRestApi.entity.PassportEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PassportMapper {
 
-    public List<PassportFullDTO> mapToDtoList(List<PassportEntity> entities);
+    public List<PassportFullDto> mapToDtoList(List<PassportEntity> entities);
 
-    public PassportEntity mapToEntity(PassportCreateDTO dto);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "student", ignore = true)
+    @Mapping(target = "imageURL", ignore = true)
+    public PassportEntity mapToEntity(PassportCreateDto dto);
 
-    public PassportFullDTO mapToDto(PassportEntity entity);
+    public PassportFullDto mapToDto(PassportEntity entity);
 }

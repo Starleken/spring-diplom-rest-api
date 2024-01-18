@@ -1,0 +1,21 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1.0.0" author="Starleken">
+        <sql>
+            alter table activities
+                change user_id student_id bigint not null;
+
+            alter table activities
+            drop foreign key FKq6cjukylkgxdjkm9npk9va2f2;
+
+            alter table activities
+                add constraint FKq6cjukylkgxdjkm9npk9va2f2
+                    foreign key (student_id) references students (id)
+                        on delete cascade;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

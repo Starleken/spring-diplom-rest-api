@@ -1,5 +1,7 @@
 package com.example.DiplomRestApi.service;
 
+import com.example.DiplomRestApi.dto.fluVaccine.FluVaccineCreateDto;
+import com.example.DiplomRestApi.dto.fluVaccine.FluVaccineUpdateDto;
 import com.example.DiplomRestApi.entity.FluVaccineEntity;
 import com.example.DiplomRestApi.entity.StudentEntity;
 
@@ -11,9 +13,9 @@ public interface FluVaccineService {
 
     List<FluVaccineEntity> findAllByStudent(Long studentId);
 
-    FluVaccineEntity create(FluVaccineEntity entity);
+    FluVaccineEntity create(FluVaccineCreateDto createDto);
 
-    FluVaccineEntity update(FluVaccineEntity entity);
+    FluVaccineEntity update(FluVaccineUpdateDto updateDto);
 
     void delete(Long id);
 }

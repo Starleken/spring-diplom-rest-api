@@ -1,36 +1,44 @@
 package com.example.DiplomRestApi.service.impl;
 
-import com.example.DiplomRestApi.entity.GroupEntity;
-import com.example.DiplomRestApi.entity.StudentEntity;
-import com.example.DiplomRestApi.entity.UserEntity;
-import com.example.DiplomRestApi.repository.GroupRepository;
-import com.example.DiplomRestApi.repository.StudentRepository;
-import com.example.DiplomRestApi.repository.UserRepository;
+import com.example.DiplomRestApi.dto.student.StudentCreateDto;
+import com.example.DiplomRestApi.dto.student.StudentFullDto;
+import com.example.DiplomRestApi.dto.student.StudentUpdateDto;
+import com.example.DiplomRestApi.entity.*;
+import com.example.DiplomRestApi.exception.EntityNotFoundException;
+import com.example.DiplomRestApi.mapper.StudentMapper;
+import com.example.DiplomRestApi.repository.*;
 import com.example.DiplomRestApi.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
-    private StudentRepository studentRepository;
-    private GroupRepository groupRepository;
-    private UserRepository userRepository;
+    private final StudentRepository studentRepository;
+    private final GroupRepository groupRepository;
+    private final UserRepository userRepository;
+    private final EducationFormRepository educationFormRepository;
+    private final RoleRepository roleRepository;
 
-    @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository, GroupRepository groupRepository, UserRepository userRepository) {
-        this.studentRepository = studentRepository;
-        this.groupRepository = groupRepository;
-        this.userRepository = userRepository;
+    private final StudentMapper mapper;
+
+    public List<StudentFullDto> findAll(){
+        List<StudentEntity> entities = studentRepository.findAll();
+
+        List<StudentFullDto> dtos = entities.stream()
+                .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
-    public List<StudentEntity> findAll(){
-        return studentRepository.findAll();
-    }
-
-    public List<StudentEntity> findStudentsByGroup(Long groupId){
+    public List<StudentFullDto> findStudentsByGroup(Long groupId){
         Optional<GroupEntity> findedGroup = groupRepository.findById(groupId);
 
         //TODO
@@ -38,11 +46,17 @@ public class StudentServiceImpl implements StudentService {
             return null;
         }
 
-        return studentRepository.findStudentsByGroup(findedGroup.get());
+        List<StudentEntity> entities = studentRepository.findStudentsByGroup(findedGroup.get());
+
+        List<StudentFullDto> dtos = entities.stream()
+                .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
-    public StudentEntity findStudentByUser(Long userId) {
+    public StudentFullDto findStudentByUser(Long userId) {
         Optional<UserEntity> findedUser = userRepository.findById(userId);
 
         //TODO
@@ -50,22 +64,72 @@ public class StudentServiceImpl implements StudentService {
             return null;
         }
 
-        return studentRepository.findStudentByUser(findedUser.get());
+        StudentEntity findedStudent = studentRepository.
+                findStudentByUser(findedUser.get());
+
+        return mapper.mapToDto(findedStudent);
     }
 
-    public StudentEntity save(StudentEntity studentEntity){
-        return studentRepository.save(studentEntity);
+    public StudentFullDto create(StudentCreateDto createDto){
+        StudentEntity student = mapper.mapToEntity(createDto);
+
+        Optional<RoleEntity> findedRole = roleRepository.findById(createDto.getUser().getRoleId());
+        if (findedRole.isEmpty()){
+            throw new EntityNotFoundException("Role is not found");
+        }
+        student.getUser().setRole(findedRole.get());
+
+        Optional<GroupEntity> findedGroup = groupRepository.findById(createDto.getGroupId());
+        if (findedGroup.isEmpty()){
+            throw new EntityNotFoundException("Group is not found");
+        }
+        student.setGroup(findedGroup.get());
+
+        Optional<EducationFormEntity> findedEducationForm = educationFormRepository.findById(
+                createDto.getEducationFormId());
+        if (findedEducationForm.isEmpty()){
+            throw new EntityNotFoundException("Education form is not found");
+        }
+        student.setEducationForm(findedEducationForm.get());
+
+        return mapper.mapToDto(studentRepository.save(student));
     }
 
-    public StudentEntity update(StudentEntity newStudentEntity){
-        StudentEntity studentEntity = studentRepository.findById(newStudentEntity.getId()).get();
+    public StudentFullDto update(StudentUpdateDto updateDto){
+        Optional<StudentEntity> studentEntity = studentRepository.findById(updateDto.getId());
+        StudentEntity studentToUpdate = studentEntity.orElseThrow(() -> new EntityNotFoundException("Student is not found"));
 
-        studentEntity.setGroup(newStudentEntity.getGroup());
-        studentEntity.setUser(newStudentEntity.getUser());
-        studentEntity.setEducationForm(newStudentEntity.getEducationForm());
-        studentEntity.setResidentialAddress(newStudentEntity.getResidentialAddress());
-        studentEntity.setRegistrationAddress(newStudentEntity.getRegistrationAddress());
+        Optional<EducationFormEntity> findedEducationForm = educationFormRepository.findById(updateDto.getEducationFormId());
+        if (findedEducationForm.isEmpty()){
+            throw new EntityNotFoundException("Education form is not found");
+        }
+        studentToUpdate.setEducationForm(findedEducationForm.get());
 
-        return studentRepository.save(studentEntity);
+        Optional<GroupEntity> findedGroup = groupRepository.findById(updateDto.getGroupId());
+        if (findedGroup.isEmpty()){
+            throw new EntityNotFoundException("Group is not found");
+        }
+        studentToUpdate.setGroup(findedGroup.get());
+
+        Optional<RoleEntity> findedRole = roleRepository.findById(updateDto.getUser().getRoleId());
+        if (findedRole.isEmpty()){
+            throw new EntityNotFoundException("Role is not found");
+        }
+        studentToUpdate.getUser().setRole(findedRole.get());
+
+        studentToUpdate.setRegistrationAddress(updateDto.getRegistrationAddress());
+        studentToUpdate.setResidentialAddress(updateDto.getResidentialAddress());
+        studentToUpdate.getUser().setLogin(updateDto.getUser().getLogin());
+        studentToUpdate.getUser().setPassword(updateDto.getUser().getPassword());
+        studentToUpdate.getUser().getPerson().setName(updateDto.getUser().getPerson().getName());
+        studentToUpdate.getUser().getPerson().setPatronymic(updateDto.getUser().getPerson().getPatronymic());
+        studentToUpdate.getUser().getPerson().setSurname(updateDto.getUser().getPerson().getSurname());
+
+        return mapper.mapToDto(studentRepository.save(studentToUpdate));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        studentRepository.deleteById(id);
     }
 }

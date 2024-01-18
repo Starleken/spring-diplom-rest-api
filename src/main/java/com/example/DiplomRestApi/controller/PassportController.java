@@ -1,8 +1,8 @@
 package com.example.DiplomRestApi.controller;
 
-import com.example.DiplomRestApi.dto.passport.PassportCreateDTO;
-import com.example.DiplomRestApi.dto.passport.PassportFullDTO;
-import com.example.DiplomRestApi.dto.passport.PassportUpdateDTO;
+import com.example.DiplomRestApi.dto.passport.PassportCreateDto;
+import com.example.DiplomRestApi.dto.passport.PassportFullDto;
+import com.example.DiplomRestApi.dto.passport.PassportUpdateDto;
 import com.example.DiplomRestApi.service.PassportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/passport")
+@RequestMapping(path = "passport")
 public class PassportController {
     private PassportService passportService;
 
@@ -20,22 +20,22 @@ public class PassportController {
     }
 
     @GetMapping()
-    public List<PassportFullDTO> findAll(){
+    public List<PassportFullDto> findAll(){
         return passportService.findAll();
     }
 
     @GetMapping(path = "/student")
-    public List<PassportFullDTO> findAllByStudent(@RequestParam Long studentId){
+    public List<PassportFullDto> findAllByStudent(@RequestParam Long studentId){
         return passportService.findAllByStudent(studentId);
     }
 
     @PostMapping()
-    public PassportFullDTO create(@RequestBody PassportCreateDTO passportCreateDTO){
+    public PassportFullDto create(@ModelAttribute PassportCreateDto passportCreateDTO){
         return passportService.create(passportCreateDTO);
     }
 
     @PutMapping()
-    public PassportFullDTO update(@RequestBody PassportUpdateDTO updateDTO){
+    public PassportFullDto update(@ModelAttribute PassportUpdateDto updateDTO){
         return passportService.update(updateDTO);
     }
 

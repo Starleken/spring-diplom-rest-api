@@ -4,9 +4,10 @@ import com.example.DiplomRestApi.entity.StudentEntity;
 import lombok.Data;
 
 @Data
-public class PassportCreateDTO {
+public class PassportFullDto {
+    private Long id;
     private String series;
     private String number;
-    private Long studentId;
+    private StudentEntity student;
     private String imageURL;
 }

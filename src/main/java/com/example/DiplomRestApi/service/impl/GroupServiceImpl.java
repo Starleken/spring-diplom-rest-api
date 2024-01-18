@@ -1,25 +1,32 @@
 package com.example.DiplomRestApi.service.impl;
 
+import com.example.DiplomRestApi.dto.group.GroupFullDto;
 import com.example.DiplomRestApi.entity.GroupEntity;
+import com.example.DiplomRestApi.mapper.GroupMapper;
 import com.example.DiplomRestApi.repository.GroupRepository;
 import com.example.DiplomRestApi.service.GroupService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class GroupServiceImpl implements GroupService {
 
-    private GroupRepository groupRepository;
+    private final GroupRepository groupRepository;
+    private final GroupMapper mapper;
 
-    @Autowired
-    public GroupServiceImpl(GroupRepository groupRepository) {
-        this.groupRepository = groupRepository;
-    }
+    public List<GroupFullDto> findAll(){
+        List<GroupEntity> entities = groupRepository.findAll();
 
-    public List<GroupEntity> findAll(){
-        return groupRepository.findAll();
+        List<GroupFullDto> dtos = entities.stream()
+                .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     public GroupEntity save(GroupEntity groupEntity){

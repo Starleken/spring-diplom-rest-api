@@ -21,9 +21,8 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "person_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private PersonEntity person;
 
     @ManyToOne()

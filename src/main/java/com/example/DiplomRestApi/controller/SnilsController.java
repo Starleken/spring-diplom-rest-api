@@ -1,5 +1,7 @@
 package com.example.DiplomRestApi.controller;
 
+import com.example.DiplomRestApi.dto.snils.SnilsCreateDto;
+import com.example.DiplomRestApi.dto.snils.SnilsUpdateDto;
 import com.example.DiplomRestApi.entity.SnilsEntity;
 import com.example.DiplomRestApi.service.SnilsService;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/snils")
+@RequestMapping("snils")
 @RequiredArgsConstructor
 public class SnilsController {
 
@@ -25,7 +27,17 @@ public class SnilsController {
     }
 
     @PostMapping
-    public SnilsEntity create(SnilsEntity entity){
-        return snilsService.create(entity);
+    public SnilsEntity create(@ModelAttribute SnilsCreateDto createDto){
+        return snilsService.create(createDto);
+    }
+
+    @PutMapping
+    public SnilsEntity update(@ModelAttribute SnilsUpdateDto updateDto){
+        return snilsService.update(updateDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable long id){
+        snilsService.delete(id);
     }
 }

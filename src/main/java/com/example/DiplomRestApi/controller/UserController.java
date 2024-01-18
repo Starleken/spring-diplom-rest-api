@@ -2,20 +2,20 @@ package com.example.DiplomRestApi.controller;
 
 import com.example.DiplomRestApi.entity.UserEntity;
 import com.example.DiplomRestApi.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/user")
+@RequestMapping(path = "user")
+@RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @GetMapping
     public List<UserEntity> getAll(){
@@ -28,8 +28,8 @@ public class UserController {
     }
 
     @GetMapping("/auth")
-    public UserEntity findByLoginAndPassword(@RequestParam String login, @RequestParam String password){
-        return userService.findByLoginAndPassword(login, password);
+    public ResponseEntity<UserEntity> findByLoginAndPassword(@RequestParam String login, @RequestParam String password){
+        return new ResponseEntity<>(userService.findByLoginAndPassword(login, password), HttpStatus.OK);
     }
 
 }

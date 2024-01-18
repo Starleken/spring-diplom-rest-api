@@ -1,6 +1,7 @@
 package com.example.DiplomRestApi.service.impl;
 
 import com.example.DiplomRestApi.entity.UserEntity;
+import com.example.DiplomRestApi.exception.EntityNotFoundException;
 import com.example.DiplomRestApi.repository.UserRepository;
 import com.example.DiplomRestApi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
         //TODO
         if (findedUser.isEmpty()){
-            return null;
+            throw new EntityNotFoundException("User is not found");
         }
         return findedUser.get();
     }

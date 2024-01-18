@@ -1,12 +1,12 @@
 package com.example.DiplomRestApi.dto.passport;
 
-import com.example.DiplomRestApi.entity.StudentEntity;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class PassportUpdateDTO {
+public class PassportUpdateDto {
     private Long id;
     private String series;
     private String number;
-    private String imageURL;
+    private MultipartFile image;
 }

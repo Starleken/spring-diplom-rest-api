@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/curator")
+@RequestMapping(path = "curator")
 public class CuratorController {
     private CuratorService curatorService;
 

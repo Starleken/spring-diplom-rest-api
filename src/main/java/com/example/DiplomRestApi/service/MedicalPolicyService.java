@@ -1,7 +1,8 @@
 package com.example.DiplomRestApi.service;
 
+import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyCreateDto;
+import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyUpdateDto;
 import com.example.DiplomRestApi.entity.MedicalPolicyEntity;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -11,9 +12,9 @@ public interface MedicalPolicyService {
 
     List<MedicalPolicyEntity> findAllByStudent(Long studentId);
 
-    MedicalPolicyEntity create(MedicalPolicyEntity entity);
+    MedicalPolicyEntity create(MedicalPolicyCreateDto createDto);
 
-    MedicalPolicyEntity update(MedicalPolicyEntity entity);
+    MedicalPolicyEntity update(MedicalPolicyUpdateDto updateDto);
 
-    void delete(Long id);
+    void deleteById(Long id);
 }

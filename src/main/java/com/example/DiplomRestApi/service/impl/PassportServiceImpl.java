@@ -1,14 +1,17 @@
 package com.example.DiplomRestApi.service.impl;
 
-import com.example.DiplomRestApi.dto.passport.PassportCreateDTO;
-import com.example.DiplomRestApi.dto.passport.PassportFullDTO;
-import com.example.DiplomRestApi.dto.passport.PassportUpdateDTO;
+import com.example.DiplomRestApi.dto.passport.PassportCreateDto;
+import com.example.DiplomRestApi.dto.passport.PassportFullDto;
+import com.example.DiplomRestApi.dto.passport.PassportUpdateDto;
 import com.example.DiplomRestApi.entity.PassportEntity;
 import com.example.DiplomRestApi.entity.StudentEntity;
+import com.example.DiplomRestApi.exception.EntityNotFoundException;
 import com.example.DiplomRestApi.mapper.PassportMapper;
 import com.example.DiplomRestApi.repository.PassportRepository;
 import com.example.DiplomRestApi.repository.StudentRepository;
+import com.example.DiplomRestApi.service.ImageService;
 import com.example.DiplomRestApi.service.PassportService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,25 +19,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PassportServiceImpl implements PassportService {
-    private PassportRepository passportRepository;
-    private StudentRepository studentRepository;
-    private PassportMapper passportMapper;
+    private final PassportRepository passportRepository;
+    private final StudentRepository studentRepository;
 
-    @Autowired
-    public PassportServiceImpl(PassportRepository passportRepository, StudentRepository studentRepository, PassportMapper passportMapper) {
-        this.passportRepository = passportRepository;
-        this.studentRepository = studentRepository;
-        this.passportMapper = passportMapper;
-    }
+    private final ImageService imageService;
+
+    private final PassportMapper passportMapper;
 
     @Override
-    public List<PassportFullDTO> findAll() {
+    public List<PassportFullDto> findAll() {
         return passportMapper.mapToDtoList(passportRepository.findAll());
     }
 
     @Override
-    public List<PassportFullDTO> findAllByStudent(Long studentId){
+    public List<PassportFullDto> findAllByStudent(Long studentId){
         Optional<StudentEntity> findedStudent = studentRepository.findById(studentId);
 
         //TODO
@@ -46,40 +46,52 @@ public class PassportServiceImpl implements PassportService {
     }
 
     @Override
-    public PassportFullDTO create(PassportCreateDTO passportToSaveDto){
-        Optional<StudentEntity> student = studentRepository.findById(passportToSaveDto.getStudentId());
+    public PassportFullDto create(PassportCreateDto createDto){
+        PassportEntity passport = passportMapper.mapToEntity(createDto);
 
-        //TODO
-        if (student.isEmpty()){
-            return null;
+        Optional<StudentEntity> findedStudent = studentRepository.findById(createDto.getStudentId());
+
+        if (findedStudent.isEmpty()){
+            throw new EntityNotFoundException("Student is not found");
         }
+        passport.setStudent(findedStudent.get());
 
-        PassportEntity passport = passportMapper.mapToEntity(passportToSaveDto);
+        String imageUrl = imageService.saveImage(createDto.getImage());
+        passport.setImageURL(imageUrl);
 
-        PassportEntity savedPassport = passportRepository.save(passport);
-
-        return passportMapper.mapToDto(savedPassport);
+        return passportMapper.mapToDto(passportRepository.save(passport));
     }
 
     @Override
-    public PassportFullDTO update(PassportUpdateDTO passportToUpdateDto) {
-        Optional<PassportEntity> passport = passportRepository.findById(passportToUpdateDto.getId());
+    public PassportFullDto update(PassportUpdateDto updateDto) {
+        Optional<PassportEntity> findedPassport = passportRepository.findById(updateDto.getId());
 
-        //TODO
-        if (passport.isEmpty()){
-            return null;
+        if (findedPassport.isEmpty()){
+            throw new EntityNotFoundException("Passport is not found");
         }
 
-        PassportEntity passportToSave = passport.get();
-        passportToSave.setNumber(passportToUpdateDto.getNumber());
-        passportToSave.setSeries(passportToUpdateDto.getSeries());
-        passportToSave.setImageURL(passportToUpdateDto.getImageURL());
+        PassportEntity passportToUpdate = findedPassport.get();
+        passportToUpdate.setNumber(updateDto.getNumber());
+        passportToUpdate.setSeries(updateDto.getSeries());
 
-        return passportMapper.mapToDto(passportRepository.save(passportToSave));
+        if (updateDto.getImage() != null){
+            imageService.deleteImage(passportToUpdate.getImageURL());
+            String imageUrl = imageService.saveImage(updateDto.getImage());
+            passportToUpdate.setImageURL(imageUrl);
+        }
+
+        return passportMapper.mapToDto(passportRepository.save(passportToUpdate));
     }
 
     @Override
     public void deleteById(Long id){
+        Optional<PassportEntity> passport = passportRepository.findById(id);
+
+        if (passport.isEmpty()){
+            throw new EntityNotFoundException("Passport is not found");
+        }
+
+        imageService.deleteImage(passport.get().getImageURL());
         passportRepository.deleteById(id);
     }
 }
