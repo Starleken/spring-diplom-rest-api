@@ -1,6 +1,7 @@
 package com.example.DiplomRestApi.service;
 
 import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyCreateDto;
+import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyFullDto;
 import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyUpdateDto;
 import com.example.DiplomRestApi.entity.MedicalPolicyEntity;
 
@@ -8,13 +9,13 @@ import java.util.List;
 
 public interface MedicalPolicyService {
 
-    List<MedicalPolicyEntity> findAll();
+    List<MedicalPolicyFullDto> findAll();
 
-    List<MedicalPolicyEntity> findAllByStudent(Long studentId);
+    List<MedicalPolicyFullDto> findAllByStudent(Long studentId);
 
-    MedicalPolicyEntity create(MedicalPolicyCreateDto createDto);
+    MedicalPolicyFullDto create(MedicalPolicyCreateDto createDto);
 
-    MedicalPolicyEntity update(MedicalPolicyUpdateDto updateDto);
+    MedicalPolicyFullDto update(MedicalPolicyUpdateDto updateDto);
 
     void deleteById(Long id);
 }

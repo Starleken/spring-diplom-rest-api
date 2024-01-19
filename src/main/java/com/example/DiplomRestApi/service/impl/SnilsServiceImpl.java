@@ -1,6 +1,7 @@
 package com.example.DiplomRestApi.service.impl;
 
 import com.example.DiplomRestApi.dto.snils.SnilsCreateDto;
+import com.example.DiplomRestApi.dto.snils.SnilsFullDto;
 import com.example.DiplomRestApi.dto.snils.SnilsUpdateDto;
 import com.example.DiplomRestApi.entity.SnilsEntity;
 import com.example.DiplomRestApi.entity.StudentEntity;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,13 +32,19 @@ public class SnilsServiceImpl implements SnilsService {
     private final SnilsMapper mapper;
 
     @Override
-    public List<SnilsEntity> findAll() {
-        return snilsRepository.findAll();
+    public List<SnilsFullDto> findAll() {
+        List<SnilsEntity> entities = snilsRepository.findAll();
+
+        List<SnilsFullDto> dtos = entities.stream()
+                .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Transactional
     @Override
-    public List<SnilsEntity> findAllByStudent(Long studentId) {
+    public List<SnilsFullDto> findAllByStudent(Long studentId) {
         Optional<StudentEntity> findedStudent = studentRepository.findById(studentId);
 
         //TODO
@@ -44,11 +52,17 @@ public class SnilsServiceImpl implements SnilsService {
             return null;
         }
 
-        return snilsRepository.findAllByStudent(findedStudent.get());
+        List<SnilsEntity> entities = snilsRepository.findAllByStudent(findedStudent.get());
+
+        List<SnilsFullDto> dtos = entities.stream()
+                .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
-    public SnilsEntity create(SnilsCreateDto createDto) {
+    public SnilsFullDto create(SnilsCreateDto createDto) {
         SnilsEntity snils = mapper.mapToEntity(createDto);
 
         Optional<StudentEntity> findedStudent = studentRepository.findById(
@@ -62,11 +76,12 @@ public class SnilsServiceImpl implements SnilsService {
         String imageURL = imageService.saveImage(createDto.getImage());
         snils.setImageURL(imageURL);
 
-        return snilsRepository.save(snils);
+        SnilsEntity saved = snilsRepository.save(snils);
+        return mapper.mapToDto(saved);
     }
 
     @Override
-    public SnilsEntity update(SnilsUpdateDto updateDto) {
+    public SnilsFullDto update(SnilsUpdateDto updateDto) {
         Optional<SnilsEntity> findedEntity = snilsRepository
                 .findById(updateDto.getId());
 
@@ -84,7 +99,8 @@ public class SnilsServiceImpl implements SnilsService {
             entityToUpdate.setImageURL(imageUrl);
         }
 
-        return snilsRepository.save(entityToUpdate);
+        SnilsEntity updated = snilsRepository.save(entityToUpdate);
+        return mapper.mapToDto(updated);
     }
 
     @Override

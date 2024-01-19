@@ -1,10 +1,13 @@
 package com.example.DiplomRestApi.controller;
 
 import com.example.DiplomRestApi.dto.snils.SnilsCreateDto;
+import com.example.DiplomRestApi.dto.snils.SnilsFullDto;
 import com.example.DiplomRestApi.dto.snils.SnilsUpdateDto;
 import com.example.DiplomRestApi.entity.SnilsEntity;
 import com.example.DiplomRestApi.service.SnilsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,23 +20,23 @@ public class SnilsController {
     private final SnilsService snilsService;
 
     @GetMapping()
-    public List<SnilsEntity> findAll(){
-        return snilsService.findAll();
+    public ResponseEntity<List<SnilsFullDto>> findAll(){
+        return new ResponseEntity<>(snilsService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/student")
-    public List<SnilsEntity> findAllByStudent(@RequestParam Long studentId){
-        return snilsService.findAllByStudent(studentId);
+    public ResponseEntity<List<SnilsFullDto>> findAllByStudent(@RequestParam Long studentId){
+        return new ResponseEntity<>(snilsService.findAllByStudent(studentId), HttpStatus.OK);
     }
 
     @PostMapping
-    public SnilsEntity create(@ModelAttribute SnilsCreateDto createDto){
-        return snilsService.create(createDto);
+    public ResponseEntity<SnilsFullDto> create(@ModelAttribute SnilsCreateDto createDto){
+        return new ResponseEntity<>(snilsService.create(createDto), HttpStatus.OK);
     }
 
     @PutMapping
-    public SnilsEntity update(@ModelAttribute SnilsUpdateDto updateDto){
-        return snilsService.update(updateDto);
+    public ResponseEntity<SnilsFullDto> update(@ModelAttribute SnilsUpdateDto updateDto){
+        return new ResponseEntity<>(snilsService.update(updateDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

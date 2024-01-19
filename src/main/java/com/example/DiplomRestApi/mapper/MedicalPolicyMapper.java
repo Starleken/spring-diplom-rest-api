@@ -1,6 +1,7 @@
 package com.example.DiplomRestApi.mapper;
 
 import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyCreateDto;
+import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyFullDto;
 import com.example.DiplomRestApi.entity.MedicalPolicyEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,4 +13,6 @@ public interface MedicalPolicyMapper {
     @Mapping(target = "student", ignore = true)
     @Mapping(target = "imageURL", ignore = true)
     MedicalPolicyEntity mapToEntity(MedicalPolicyCreateDto createDto);
+
+    MedicalPolicyFullDto mapToDto(MedicalPolicyEntity entity);
 }

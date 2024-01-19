@@ -1,15 +1,16 @@
 package com.example.DiplomRestApi.service;
 
+import com.example.DiplomRestApi.dto.curator.CuratorFullDto;
 import com.example.DiplomRestApi.entity.CuratorEntity;
 
 import java.util.List;
 
 public interface CuratorService {
-    public List<CuratorEntity> findAll();
+    public List<CuratorFullDto> findAll();
 
-    public CuratorEntity findCuratorByUser(Long userId);
+    public CuratorFullDto findCuratorByUser(Long userId);
 
-    public CuratorEntity create(CuratorEntity curatorEntity);
+    public CuratorFullDto create(CuratorEntity curatorEntity);
 
-    public CuratorEntity update(CuratorEntity curatorEntity);
+    public CuratorFullDto update(CuratorEntity curatorEntity);
 }

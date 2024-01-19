@@ -1,6 +1,7 @@
 package com.example.DiplomRestApi.service.impl;
 
 import com.example.DiplomRestApi.dto.activity.ActivityCreateDto;
+import com.example.DiplomRestApi.dto.activity.ActivityFullDto;
 import com.example.DiplomRestApi.dto.activity.ActivityUpdateDto;
 import com.example.DiplomRestApi.entity.*;
 import com.example.DiplomRestApi.exception.EntityNotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -29,12 +31,18 @@ public class ActivityServiceImpl implements ActivityService {
     private final ActivityMapper activityMapper;
 
     @Override
-    public List<ActivityEntity> findAll(){
-        return activityRepository.findAll();
+    public List<ActivityFullDto> findAll(){
+        List<ActivityEntity> entities = activityRepository.findAll();
+
+        List<ActivityFullDto> dtos = entities.stream()
+                .map(activityMapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
-    public ActivityEntity save(ActivityCreateDto createDto) {
+    public ActivityFullDto save(ActivityCreateDto createDto) {
         ActivityEntity activity = activityMapper.mapToEntity(createDto);
         String imagePath = imageService.saveImage(createDto.getImage());
         activity.setImageURL(imagePath);
@@ -64,11 +72,11 @@ public class ActivityServiceImpl implements ActivityService {
 
         ActivityEntity savedActivity = activityRepository.save(activity);
 
-        return savedActivity;
+        return activityMapper.mapToDto(savedActivity);
     }
 
     @Override
-    public ActivityEntity update(ActivityUpdateDto updateDto){
+    public ActivityFullDto update(ActivityUpdateDto updateDto){
         Optional<ActivityEntity> activityToChange = activityRepository.findById(updateDto.getId());
 
         //TODO
@@ -98,11 +106,12 @@ public class ActivityServiceImpl implements ActivityService {
             activityToUpdate.setImageURL(imagePath);
         }
 
-        return activityRepository.save(activityToUpdate);
+        ActivityEntity updated = activityRepository.save(activityToUpdate);
+        return activityMapper.mapToDto(updated);
     }
 
     @Override
-    public List<ActivityEntity> findActivitiesByStudent(long studentId) {
+    public List<ActivityFullDto> findActivitiesByStudent(long studentId) {
         Optional<StudentEntity> findedStudent = studentRepository.findById(studentId);
 
         //TODO
@@ -110,7 +119,14 @@ public class ActivityServiceImpl implements ActivityService {
             return null;
         }
 
-        return activityRepository.findActivitiesByStudent(findedStudent.get());
+        List<ActivityEntity> entities = activityRepository.
+                findActivitiesByStudent(findedStudent.get());
+
+        List<ActivityFullDto> dtos = entities.stream()
+                .map(activityMapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override

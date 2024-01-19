@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,13 @@ public class PassportServiceImpl implements PassportService {
 
     @Override
     public List<PassportFullDto> findAll() {
-        return passportMapper.mapToDtoList(passportRepository.findAll());
+        List<PassportEntity> entities = passportRepository.findAll();
+
+        List<PassportFullDto> dtos = entities.stream()
+                .map(passportMapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
@@ -42,7 +49,13 @@ public class PassportServiceImpl implements PassportService {
             return null;
         }
 
-        return passportMapper.mapToDtoList(passportRepository.findAllByStudent(findedStudent.get()));
+        List<PassportEntity> entities = passportRepository.findAllByStudent(findedStudent.get());
+
+        List<PassportFullDto> dtos = entities.stream()
+                .map(passportMapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
@@ -59,7 +72,8 @@ public class PassportServiceImpl implements PassportService {
         String imageUrl = imageService.saveImage(createDto.getImage());
         passport.setImageURL(imageUrl);
 
-        return passportMapper.mapToDto(passportRepository.save(passport));
+        PassportEntity saved = passportRepository.save(passport);
+        return passportMapper.mapToDto(saved);
     }
 
     @Override
@@ -80,7 +94,8 @@ public class PassportServiceImpl implements PassportService {
             passportToUpdate.setImageURL(imageUrl);
         }
 
-        return passportMapper.mapToDto(passportRepository.save(passportToUpdate));
+        PassportEntity updated = passportRepository.save(passportToUpdate);
+        return passportMapper.mapToDto(updated);
     }
 
     @Override

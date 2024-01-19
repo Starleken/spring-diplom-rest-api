@@ -27,16 +27,4 @@ public class ImageController {
             return null;
         }
     }
-
-    @PostMapping()
-    public String saveImage(@RequestBody MultipartFile multipartFile){
-        try{
-            return imageService.saveImage(multipartFile);
-        }
-        catch(Exception ex){
-            System.out.println(ex.getMessage());
-        }
-
-        return null;
-    }
 }

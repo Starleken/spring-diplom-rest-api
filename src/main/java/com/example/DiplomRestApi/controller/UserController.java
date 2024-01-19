@@ -1,5 +1,6 @@
 package com.example.DiplomRestApi.controller;
 
+import com.example.DiplomRestApi.dto.user.UserFullDto;
 import com.example.DiplomRestApi.entity.UserEntity;
 import com.example.DiplomRestApi.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +19,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserEntity> getAll(){
-        return userService.findAll();
-    }
-
-    @PostMapping
-    public void create(@RequestBody UserEntity userEntity){
-        userService.save(userEntity);
+    public ResponseEntity<List<UserFullDto>> getAll(){
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/auth")
-    public ResponseEntity<UserEntity> findByLoginAndPassword(@RequestParam String login, @RequestParam String password){
+    public ResponseEntity<UserFullDto> findByLoginAndPassword(@RequestParam String login, @RequestParam String password){
         return new ResponseEntity<>(userService.findByLoginAndPassword(login, password), HttpStatus.OK);
     }
 

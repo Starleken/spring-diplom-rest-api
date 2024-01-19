@@ -1,10 +1,13 @@
 package com.example.DiplomRestApi.controller;
 
 import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyCreateDto;
+import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyFullDto;
 import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyUpdateDto;
 import com.example.DiplomRestApi.entity.MedicalPolicyEntity;
 import com.example.DiplomRestApi.service.MedicalPolicyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,23 +20,23 @@ public class MedicalPolicyController {
     private final MedicalPolicyService medicalPolicyService;
 
     @GetMapping()
-    public List<MedicalPolicyEntity> findAll(){
-        return medicalPolicyService.findAll();
+    public ResponseEntity<List<MedicalPolicyFullDto>> findAll(){
+        return new ResponseEntity<>(medicalPolicyService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/student")
-    public List<MedicalPolicyEntity> findAllByStudent(@RequestParam Long studentId){
-        return medicalPolicyService.findAllByStudent(studentId);
+    public ResponseEntity<List<MedicalPolicyFullDto>> findAllByStudent(@RequestParam Long studentId){
+        return new ResponseEntity<>(medicalPolicyService.findAllByStudent(studentId), HttpStatus.OK);
     }
 
     @PostMapping()
-    public MedicalPolicyEntity create(@ModelAttribute MedicalPolicyCreateDto createDto){
-        return medicalPolicyService.create(createDto);
+    public ResponseEntity<MedicalPolicyFullDto> create(@ModelAttribute MedicalPolicyCreateDto createDto){
+        return new ResponseEntity<>(medicalPolicyService.create(createDto), HttpStatus.OK);
     }
 
     @PutMapping()
-    public MedicalPolicyEntity update(@ModelAttribute MedicalPolicyUpdateDto updateDto){
-        return medicalPolicyService.update(updateDto);
+    public ResponseEntity<MedicalPolicyFullDto> update(@ModelAttribute MedicalPolicyUpdateDto updateDto){
+        return new ResponseEntity<>(medicalPolicyService.update(updateDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

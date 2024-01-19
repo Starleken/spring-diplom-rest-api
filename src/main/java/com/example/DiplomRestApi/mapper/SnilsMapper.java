@@ -1,6 +1,7 @@
 package com.example.DiplomRestApi.mapper;
 
 import com.example.DiplomRestApi.dto.snils.SnilsCreateDto;
+import com.example.DiplomRestApi.dto.snils.SnilsFullDto;
 import com.example.DiplomRestApi.entity.SnilsEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,4 +13,6 @@ public interface SnilsMapper {
     @Mapping(target = "student", ignore = true)
     @Mapping(target = "imageURL", ignore = true)
     SnilsEntity mapToEntity(SnilsCreateDto createDto);
+
+    SnilsFullDto mapToDto(SnilsEntity entity);
 }

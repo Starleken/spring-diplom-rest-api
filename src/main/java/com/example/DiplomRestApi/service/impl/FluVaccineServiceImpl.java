@@ -1,6 +1,7 @@
 package com.example.DiplomRestApi.service.impl;
 
 import com.example.DiplomRestApi.dto.fluVaccine.FluVaccineCreateDto;
+import com.example.DiplomRestApi.dto.fluVaccine.FluVaccineFullDto;
 import com.example.DiplomRestApi.dto.fluVaccine.FluVaccineUpdateDto;
 import com.example.DiplomRestApi.entity.FluVaccineEntity;
 import com.example.DiplomRestApi.entity.StudentEntity;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,12 +30,18 @@ public class FluVaccineServiceImpl implements FluVaccineService {
     private final FluVaccineMapper mapper;
 
     @Override
-    public List<FluVaccineEntity> findAll() {
-        return fluVaccineRepository.findAll();
+    public List<FluVaccineFullDto> findAll() {
+        List<FluVaccineEntity> entities = fluVaccineRepository.findAll();
+
+        List<FluVaccineFullDto> dtos = entities.stream()
+                .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
-    public List<FluVaccineEntity> findAllByStudent(Long studentId) {
+    public List<FluVaccineFullDto> findAllByStudent(Long studentId) {
         Optional<StudentEntity> findedStudent = studentRepository.findById(studentId);
 
         //TODO
@@ -41,11 +49,17 @@ public class FluVaccineServiceImpl implements FluVaccineService {
             return null;
         }
 
-        return fluVaccineRepository.findAllByStudent(findedStudent.get());
+        List<FluVaccineEntity> entities = fluVaccineRepository.findAllByStudent(findedStudent.get());
+
+        List<FluVaccineFullDto> dtos = entities.stream()
+                .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
-    public FluVaccineEntity create(FluVaccineCreateDto createDto) {
+    public FluVaccineFullDto create(FluVaccineCreateDto createDto) {
         FluVaccineEntity fluVaccine = mapper.mapToEntity(createDto);
 
         Optional<StudentEntity> findedStudent = studentRepository.findById(
@@ -59,11 +73,12 @@ public class FluVaccineServiceImpl implements FluVaccineService {
         String imageUrl = imageService.saveImage(createDto.getImage());
         fluVaccine.setImageURL(imageUrl);
 
-        return fluVaccineRepository.save(fluVaccine);
+        FluVaccineEntity saved = fluVaccineRepository.save(fluVaccine);
+        return mapper.mapToDto(saved);
     }
 
     @Override
-    public FluVaccineEntity update(FluVaccineUpdateDto updateDto) {
+    public FluVaccineFullDto update(FluVaccineUpdateDto updateDto) {
         Optional<FluVaccineEntity> findedEntity = fluVaccineRepository.
                 findById(updateDto.getId());
 
@@ -80,7 +95,8 @@ public class FluVaccineServiceImpl implements FluVaccineService {
             entityToUpdate.setImageURL(imageUrl);
         }
 
-        return fluVaccineRepository.save(entityToUpdate);
+        FluVaccineEntity updated = fluVaccineRepository.save(entityToUpdate);
+        return mapper.mapToDto(updated);
     }
 
     @Override

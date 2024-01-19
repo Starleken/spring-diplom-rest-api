@@ -1,6 +1,7 @@
 package com.example.DiplomRestApi.controller;
 
 import com.example.DiplomRestApi.dto.activity.ActivityCreateDto;
+import com.example.DiplomRestApi.dto.activity.ActivityFullDto;
 import com.example.DiplomRestApi.dto.activity.ActivityUpdateDto;
 import com.example.DiplomRestApi.entity.ActivityEntity;
 import com.example.DiplomRestApi.service.ActivityService;
@@ -20,22 +21,22 @@ public class ActivityController {
     private final ActivityService activityService;
 
     @GetMapping
-    public ResponseEntity<List<ActivityEntity>> findAll(){
+    public ResponseEntity<List<ActivityFullDto>> findAll(){
         return new ResponseEntity<>(activityService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/student")
-    public ResponseEntity<List<ActivityEntity>> findActivitiesByStudent(@RequestParam Long studentId){
+    public ResponseEntity<List<ActivityFullDto>> findActivitiesByStudent(@RequestParam Long studentId){
         return new ResponseEntity<>(activityService.findActivitiesByStudent(studentId), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ActivityEntity> save(@ModelAttribute ActivityCreateDto createDto){
+    public ResponseEntity<ActivityFullDto> save(@ModelAttribute ActivityCreateDto createDto){
         return new ResponseEntity<>(activityService.save(createDto), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<ActivityEntity> update(@ModelAttribute ActivityUpdateDto updateDto){
+    public ResponseEntity<ActivityFullDto> update(@ModelAttribute ActivityUpdateDto updateDto){
         return new ResponseEntity<>(activityService.update(updateDto), HttpStatus.OK);
     }
 

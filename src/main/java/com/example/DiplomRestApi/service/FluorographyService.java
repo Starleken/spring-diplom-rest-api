@@ -1,6 +1,7 @@
 package com.example.DiplomRestApi.service;
 
 import com.example.DiplomRestApi.dto.fluorography.FluorographyCreateDto;
+import com.example.DiplomRestApi.dto.fluorography.FluorographyFullDto;
 import com.example.DiplomRestApi.dto.fluorography.FluorographyUpdateDto;
 import com.example.DiplomRestApi.entity.FluorographyEntity;
 
@@ -8,13 +9,13 @@ import java.util.List;
 
 public interface FluorographyService {
 
-    List<FluorographyEntity> findAll();
+    List<FluorographyFullDto> findAll();
 
-    List<FluorographyEntity> findAllByStudent(Long studentId);
+    List<FluorographyFullDto> findAllByStudent(Long studentId);
 
-    FluorographyEntity create(FluorographyCreateDto createDto);
+    FluorographyFullDto create(FluorographyCreateDto createDto);
 
-    FluorographyEntity update(FluorographyUpdateDto updateDto);
+    FluorographyFullDto update(FluorographyUpdateDto updateDto);
 
     void delete(Long id);
 }

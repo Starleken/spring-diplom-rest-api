@@ -1,6 +1,7 @@
 package com.example.DiplomRestApi.service.impl;
 
 import com.example.DiplomRestApi.dto.inn.InnCreateDto;
+import com.example.DiplomRestApi.dto.inn.InnFullDto;
 import com.example.DiplomRestApi.dto.inn.InnUpdateDto;
 import com.example.DiplomRestApi.entity.InnEntity;
 import com.example.DiplomRestApi.entity.StudentEntity;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,23 +31,35 @@ public class InnServiceImpl implements InnService {
     private final InnMapper mapper;
 
     @Override
-    public List<InnEntity> findAll() {
-        return innRepository.findAll();
+    public List<InnFullDto> findAll() {
+        List<InnEntity> entities = innRepository.findAll();
+
+        List<InnFullDto> dtos = entities.stream()
+                .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
-    public List<InnEntity> findAllByStudent(Long studentId){
+    public List<InnFullDto> findAllByStudent(Long studentId){
         Optional<StudentEntity> findedStudent = studentRepository.findById(studentId);
 
         if (findedStudent.isEmpty()){
             throw new EntityNotFoundException("Student is not found");
         }
 
-        return innRepository.findAllByStudent(findedStudent.get());
+        List<InnEntity> entities = innRepository.findAllByStudent(findedStudent.get());
+
+        List<InnFullDto> dtos = entities.stream()
+                .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
-    public InnEntity create(InnCreateDto createDto) {
+    public InnFullDto create(InnCreateDto createDto) {
         InnEntity inn = mapper.mapToEntity(createDto);
 
         Optional<StudentEntity> findedStudent = studentRepository.findById(
@@ -59,11 +73,12 @@ public class InnServiceImpl implements InnService {
         String imageUrl = imageService.saveImage(createDto.getImage());
         inn.setImageURL(imageUrl);
 
-        return innRepository.save(inn);
+        InnEntity saved = innRepository.save(inn);
+        return mapper.mapToDto(saved);
     }
 
     @Override
-    public InnEntity update(InnUpdateDto updateDto) {
+    public InnFullDto update(InnUpdateDto updateDto) {
         Optional<InnEntity> findedEntity = innRepository
                 .findById(updateDto.getId());
 
@@ -80,7 +95,8 @@ public class InnServiceImpl implements InnService {
             entityToUpdate.setImageURL(imageUrl);
         }
 
-        return innRepository.save(entityToUpdate);
+        InnEntity updated = innRepository.save(entityToUpdate);
+        return mapper.mapToDto(updated);
     }
 
     @Override

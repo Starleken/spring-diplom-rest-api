@@ -1,10 +1,13 @@
 package com.example.DiplomRestApi.controller;
 
 import com.example.DiplomRestApi.dto.fluVaccine.FluVaccineCreateDto;
+import com.example.DiplomRestApi.dto.fluVaccine.FluVaccineFullDto;
 import com.example.DiplomRestApi.dto.fluVaccine.FluVaccineUpdateDto;
 import com.example.DiplomRestApi.entity.FluVaccineEntity;
 import com.example.DiplomRestApi.service.FluVaccineService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,23 +20,23 @@ public class FluVaccineController {
     private final FluVaccineService fluVaccineService;
 
     @GetMapping()
-    public List<FluVaccineEntity> findAll(){
-        return fluVaccineService.findAll();
+    public ResponseEntity<List<FluVaccineFullDto>> findAll(){
+        return new ResponseEntity<>(fluVaccineService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/student")
-    public List<FluVaccineEntity> findAllByStudent(@RequestParam Long studentId){
-        return fluVaccineService.findAllByStudent(studentId);
+    public ResponseEntity<List<FluVaccineFullDto>> findAllByStudent(@RequestParam Long studentId){
+        return new ResponseEntity<>(fluVaccineService.findAllByStudent(studentId), HttpStatus.OK);
     }
 
     @PostMapping()
-    public FluVaccineEntity create(@ModelAttribute FluVaccineCreateDto createDto){
-        return fluVaccineService.create(createDto);
+    public ResponseEntity<FluVaccineFullDto> create(@ModelAttribute FluVaccineCreateDto createDto){
+        return new ResponseEntity<>(fluVaccineService.create(createDto), HttpStatus.OK);
     }
 
     @PutMapping()
-    public FluVaccineEntity update(@ModelAttribute  FluVaccineUpdateDto updateDto){
-        return fluVaccineService.update(updateDto);
+    public ResponseEntity<FluVaccineFullDto> update(@ModelAttribute  FluVaccineUpdateDto updateDto){
+        return new ResponseEntity<>(fluVaccineService.update(updateDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

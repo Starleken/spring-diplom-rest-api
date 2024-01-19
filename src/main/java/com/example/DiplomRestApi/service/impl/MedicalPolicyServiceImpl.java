@@ -1,6 +1,7 @@
 package com.example.DiplomRestApi.service.impl;
 
 import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyCreateDto;
+import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyFullDto;
 import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyUpdateDto;
 import com.example.DiplomRestApi.entity.MedicalPolicyEntity;
 import com.example.DiplomRestApi.entity.StudentEntity;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,12 +30,18 @@ public class MedicalPolicyServiceImpl implements MedicalPolicyService {
     private final MedicalPolicyMapper mapper;
 
     @Override
-    public List<MedicalPolicyEntity> findAll() {
-        return medicalPolicyRepository.findAll();
+    public List<MedicalPolicyFullDto> findAll() {
+        List<MedicalPolicyEntity> entities = medicalPolicyRepository.findAll();
+
+        List<MedicalPolicyFullDto> dtos = entities.stream()
+                .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
-    public List<MedicalPolicyEntity> findAllByStudent(Long studentId) {
+    public List<MedicalPolicyFullDto> findAllByStudent(Long studentId) {
         Optional<StudentEntity> findedStudent = studentRepository.findById(studentId);
 
         //TODO
@@ -41,11 +49,17 @@ public class MedicalPolicyServiceImpl implements MedicalPolicyService {
             return null;
         }
 
-        return medicalPolicyRepository.findAllByStudent(findedStudent.get());
+        List<MedicalPolicyEntity> entities = medicalPolicyRepository.findAllByStudent(findedStudent.get());
+
+        List<MedicalPolicyFullDto> dtos = entities.stream()
+                .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
-    public MedicalPolicyEntity create(MedicalPolicyCreateDto createDto) {
+    public MedicalPolicyFullDto create(MedicalPolicyCreateDto createDto) {
         MedicalPolicyEntity medicalPolicy = mapper.mapToEntity(createDto);
 
         Optional<StudentEntity> findedStudent = studentRepository.findById(
@@ -59,11 +73,12 @@ public class MedicalPolicyServiceImpl implements MedicalPolicyService {
         String imageUrl = imageService.saveImage(createDto.getImage());
         medicalPolicy.setImageURL(imageUrl);
 
-        return medicalPolicyRepository.save(medicalPolicy);
+        MedicalPolicyEntity saved = medicalPolicyRepository.save(medicalPolicy);
+        return mapper.mapToDto(saved);
     }
 
     @Override
-    public MedicalPolicyEntity update(MedicalPolicyUpdateDto updateDto) {
+    public MedicalPolicyFullDto update(MedicalPolicyUpdateDto updateDto) {
         Optional<MedicalPolicyEntity> findedEntity = medicalPolicyRepository.
                 findById(updateDto.getId());
 
@@ -81,7 +96,8 @@ public class MedicalPolicyServiceImpl implements MedicalPolicyService {
             entityToUpdate.setImageURL(imageUrl);
         }
 
-        return medicalPolicyRepository.save(entityToUpdate);
+        MedicalPolicyEntity updated = medicalPolicyRepository.save(entityToUpdate);
+        return mapper.mapToDto(updated);
     }
 
     @Override

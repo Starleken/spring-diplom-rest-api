@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class PassportFullDto {
+
     private Long id;
     private String series;
     private String number;

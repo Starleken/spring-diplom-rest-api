@@ -1,6 +1,7 @@
 package com.example.DiplomRestApi.service.impl;
 
 import com.example.DiplomRestApi.dto.fluorography.FluorographyCreateDto;
+import com.example.DiplomRestApi.dto.fluorography.FluorographyFullDto;
 import com.example.DiplomRestApi.dto.fluorography.FluorographyUpdateDto;
 import com.example.DiplomRestApi.entity.FluorographyEntity;
 import com.example.DiplomRestApi.entity.StudentEntity;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -29,12 +31,18 @@ public class FluorographyServiceImpl implements FluorographyService {
     private final FluorographyMapper mapper;
 
     @Override
-    public List<FluorographyEntity> findAll() {
-        return fluorographyRepository.findAll();
+    public List<FluorographyFullDto> findAll() {
+        List<FluorographyEntity> entities = fluorographyRepository.findAll();
+
+        List<FluorographyFullDto> dtos = entities.stream()
+                .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
-    public List<FluorographyEntity> findAllByStudent(Long studentId) {
+    public List<FluorographyFullDto> findAllByStudent(Long studentId) {
         Optional<StudentEntity> findedStudent = studentRepository.findById(studentId);
 
         //TODO
@@ -42,11 +50,17 @@ public class FluorographyServiceImpl implements FluorographyService {
             return null;
         }
 
-        return fluorographyRepository.findAllByStudent(findedStudent.get());
+        List<FluorographyEntity> entities = fluorographyRepository.findAllByStudent(findedStudent.get());
+
+        List<FluorographyFullDto> dtos = entities.stream()
+                .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
-    public FluorographyEntity create(FluorographyCreateDto createDto) {
+    public FluorographyFullDto create(FluorographyCreateDto createDto) {
         FluorographyEntity fluorographyToSave = mapper.mapToEntity(createDto);
 
         Optional<StudentEntity> findedStudent = studentRepository.findById(createDto.getStudentId());
@@ -60,11 +74,12 @@ public class FluorographyServiceImpl implements FluorographyService {
         String imageURL = imageService.saveImage(createDto.getImage());
         fluorographyToSave.setImageURL(imageURL);
 
-        return fluorographyRepository.save(fluorographyToSave);
+        FluorographyEntity saved = fluorographyRepository.save(fluorographyToSave);
+        return mapper.mapToDto(saved);
     }
 
     @Override
-    public FluorographyEntity update(FluorographyUpdateDto updateDto) {
+    public FluorographyFullDto update(FluorographyUpdateDto updateDto) {
         Optional<FluorographyEntity> findedEntity = fluorographyRepository
                 .findById(updateDto.getId());
 
@@ -84,7 +99,8 @@ public class FluorographyServiceImpl implements FluorographyService {
             entityToUpdate.setImageURL(imageUrl);
         }
 
-        return fluorographyRepository.save(entityToUpdate);
+        FluorographyEntity updated = fluorographyRepository.save(entityToUpdate);
+        return mapper.mapToDto(updated);
     }
 
     @Override
