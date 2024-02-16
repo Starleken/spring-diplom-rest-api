@@ -28,6 +28,11 @@ public class StudentController {
         return new ResponseEntity<>(studentService.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<StudentFullDto> findById(@PathVariable Long id){
+        return new ResponseEntity<>(studentService.findById(id), HttpStatus.OK);
+    }
+
     @GetMapping(path = "/group")
     public ResponseEntity<List<StudentFullDto>> findStudentsByGroup(@RequestParam Long groupId){
         return new ResponseEntity<>(studentService.findStudentsByGroup(groupId), HttpStatus.OK);

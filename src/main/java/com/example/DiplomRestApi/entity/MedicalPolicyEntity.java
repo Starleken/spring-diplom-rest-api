@@ -21,4 +21,7 @@ public class MedicalPolicyEntity {
     @OneToOne
     @JoinColumn(name = "id_student", nullable = false)
     private StudentEntity student;
+
+    @Column(name = "issuing_organization", nullable = false)
+    private String issuingOrganization;
 }

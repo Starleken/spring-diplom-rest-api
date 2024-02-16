@@ -1,6 +1,8 @@
 package com.example.DiplomRestApi.controller;
 
+import com.example.DiplomRestApi.dto.curator.CuratorCreateDto;
 import com.example.DiplomRestApi.dto.curator.CuratorFullDto;
+import com.example.DiplomRestApi.dto.curator.CuratorUpdateDto;
 import com.example.DiplomRestApi.entity.CuratorEntity;
 import com.example.DiplomRestApi.service.CuratorService;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +31,12 @@ public class CuratorController {
     }
 
     @PostMapping
-    public ResponseEntity<CuratorFullDto> create(@RequestBody CuratorEntity curatorEntity){
-        return new ResponseEntity<>(curatorService.create(curatorEntity), HttpStatus.OK);
+    public ResponseEntity<CuratorFullDto> create(@RequestBody CuratorCreateDto createDto){
+        return new ResponseEntity<>(curatorService.create(createDto), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<CuratorFullDto> update(@RequestBody CuratorEntity curatorEntity){
-        return new ResponseEntity<>(curatorService.update(curatorEntity), HttpStatus.OK);
+    public ResponseEntity<CuratorFullDto> update(@RequestBody CuratorUpdateDto updateDto){
+        return new ResponseEntity<>(curatorService.update(updateDto), HttpStatus.OK);
     }
 }

@@ -10,6 +10,8 @@ import java.util.List;
 public interface StudentService {
     public List<StudentFullDto> findAll();
 
+    public StudentFullDto findById(Long id);
+
     public StudentFullDto create(StudentCreateDto createDto);
 
     public StudentFullDto update(StudentUpdateDto updateDto);

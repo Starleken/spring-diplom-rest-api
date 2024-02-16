@@ -28,6 +28,9 @@ public class ActivityEntity {
     @Column
     private String imageURL;
 
+    @Column(name = "event_place", nullable = false)
+    private String eventPlace;
+
     @ManyToOne
     @JoinColumn(name = "activityType_id")
     private ActivityTypeEntity activityType;

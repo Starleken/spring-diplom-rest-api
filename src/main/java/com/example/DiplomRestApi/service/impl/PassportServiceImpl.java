@@ -12,6 +12,7 @@ import com.example.DiplomRestApi.repository.StudentRepository;
 import com.example.DiplomRestApi.service.ImageService;
 import com.example.DiplomRestApi.service.PassportService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PassportServiceImpl implements PassportService {
     private final PassportRepository passportRepository;
     private final StudentRepository studentRepository;
@@ -61,6 +63,7 @@ public class PassportServiceImpl implements PassportService {
     @Override
     public PassportFullDto create(PassportCreateDto createDto){
         PassportEntity passport = passportMapper.mapToEntity(createDto);
+        log.info(passport.getIssueDate().toString());
 
         Optional<StudentEntity> findedStudent = studentRepository.findById(createDto.getStudentId());
 
@@ -87,6 +90,7 @@ public class PassportServiceImpl implements PassportService {
         PassportEntity passportToUpdate = findedPassport.get();
         passportToUpdate.setNumber(updateDto.getNumber());
         passportToUpdate.setSeries(updateDto.getSeries());
+        passportToUpdate.setIssueDate(updateDto.getIssueDate());
 
         if (updateDto.getImage() != null){
             imageService.deleteImage(passportToUpdate.getImageURL());

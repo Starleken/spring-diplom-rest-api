@@ -1,12 +1,21 @@
 package com.example.DiplomRestApi.service.impl;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.DiplomRestApi.service.ImageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,9 +23,15 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class ImageServiceImpl implements ImageService {
 
-    private final String folderPath = "src/main/resouces/images/";
+//    private final String folderPath = "src/main/resouces/images/";
+
+    private String accessKeyId = "YCAJEgPfPYYgZh-aeJmTJCpS2";
+    private String secretAccessKey = "YCO6aMVzXHhwpkmwYJ_mRuAtZdhxRdxg8yMz8Mpe";
+    private String bucketName = "cloud-image-storage";
+
 
     @Override
     public byte[] getImage(String imageName) throws Exception{
@@ -39,6 +54,7 @@ public class ImageServiceImpl implements ImageService {
             Path path = Paths.get(absolutePath + "/" +uuid + ".jpg");
             Path savedPath = Files.write(path, bytes);
         } catch (Exception ex) {
+            log.info(ex.getMessage());
             return null;
         }
 

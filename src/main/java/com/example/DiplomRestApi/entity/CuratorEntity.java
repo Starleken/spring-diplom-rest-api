@@ -20,5 +20,5 @@ public class CuratorEntity {
 
     @ManyToOne()
     @JoinColumn(name = "group_id", nullable = true)
-    public GroupEntity group;
+    private GroupEntity group;
 }

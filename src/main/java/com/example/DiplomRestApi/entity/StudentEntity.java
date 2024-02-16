@@ -24,6 +24,9 @@ public class StudentEntity {
     @JoinColumn(name = "educationForm_id")
     private EducationFormEntity educationForm;
 
+    @Column(name = "phone", nullable = true)
+    private String phone;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserEntity user;

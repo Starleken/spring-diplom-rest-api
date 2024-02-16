@@ -38,6 +38,16 @@ public class StudentServiceImpl implements StudentService {
         return dtos;
     }
 
+    @Override
+    public StudentFullDto findById(Long id) {
+        Optional<StudentEntity> finded = studentRepository.findById(id);
+        if (finded.isEmpty()){
+            throw new EntityNotFoundException("Student is not found");
+        }
+
+        return mapper.mapToDto(finded.get());
+    }
+
     public List<StudentFullDto> findStudentsByGroup(Long groupId){
         Optional<GroupEntity> findedGroup = groupRepository.findById(groupId);
 
