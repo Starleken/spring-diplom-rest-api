@@ -99,6 +99,7 @@ public class ActivityServiceImpl implements ActivityService {
         activityToUpdate.setName(updateDto.getName());
         activityToUpdate.setDate(updateDto.getDate());
         activityToUpdate.setPlace(updateDto.getPlace());
+        activityToUpdate.setEventPlace(updateDto.getEventPlace());
 
         if (updateDto.getImage() != null){
             imageService.deleteImage(activityToUpdate.getImageURL());

@@ -6,7 +6,7 @@ import com.example.DiplomRestApi.entity.GroupEntity;
 import java.util.List;
 
 public interface GroupService {
-    public List<GroupFullDto> findAll();
+    List<GroupFullDto> findAll();
 
-    public GroupEntity save(GroupEntity groupEntity);
+    GroupEntity save(GroupEntity groupEntity);
 }

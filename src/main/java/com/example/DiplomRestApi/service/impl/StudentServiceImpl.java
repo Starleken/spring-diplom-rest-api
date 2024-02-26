@@ -134,6 +134,7 @@ public class StudentServiceImpl implements StudentService {
         studentToUpdate.getUser().getPerson().setName(updateDto.getUser().getPerson().getName());
         studentToUpdate.getUser().getPerson().setPatronymic(updateDto.getUser().getPerson().getPatronymic());
         studentToUpdate.getUser().getPerson().setSurname(updateDto.getUser().getPerson().getSurname());
+        studentToUpdate.setPhone(updateDto.getPhone());
 
         return mapper.mapToDto(studentRepository.save(studentToUpdate));
     }

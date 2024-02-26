@@ -8,11 +8,11 @@ import com.example.DiplomRestApi.entity.CuratorEntity;
 import java.util.List;
 
 public interface CuratorService {
-    public List<CuratorFullDto> findAll();
+    List<CuratorFullDto> findAll();
 
-    public CuratorFullDto findCuratorByUser(Long userId);
+    CuratorFullDto findCuratorByUser(Long userId);
 
-    public CuratorFullDto create(CuratorCreateDto createDto);
+    CuratorFullDto create(CuratorCreateDto createDto);
 
-    public CuratorFullDto update(CuratorUpdateDto updateDto);
+    CuratorFullDto update(CuratorUpdateDto updateDto);
 }

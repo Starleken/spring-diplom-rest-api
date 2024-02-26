@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ActivityLevelService {
 
-    public List<ActivityLevelFullDto> findAll();
+    List<ActivityLevelFullDto> findAll();
 }

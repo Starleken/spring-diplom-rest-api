@@ -14,5 +14,6 @@ public interface ActivityMapper {
     @Mapping(target = "imageURL", ignore = true)
     ActivityEntity mapToEntity(ActivityCreateDto createDTO);
 
+    @Mapping(target = "imageUrl", source = "imageURL")
     ActivityFullDto mapToDto(ActivityEntity entity);
 }

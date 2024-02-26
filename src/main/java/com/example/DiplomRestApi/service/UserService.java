@@ -6,7 +6,7 @@ import com.example.DiplomRestApi.entity.UserEntity;
 import java.util.List;
 
 public interface UserService {
-    public List<UserFullDto> findAll();
+    List<UserFullDto> findAll();
 
-    public UserFullDto findByLoginAndPassword(String login, String password);
+    UserFullDto findByLoginAndPassword(String login, String password);
 }

@@ -5,18 +5,18 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/diplom1
+    url: jdbc:mysql://${DATABASE_URL}/diplom1 #jdbc:mysql://localhost:3306/diplom1
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: tqw1467gheK
+    username: ${DATABASE_USER} #root
+    password: ${DATABASE_PASSWORD}  #root
 
 
   liquibase:
     enabled: true
     change-log: classpath:liquibase/master.xml
-    url: jdbc:mysql://localhost:3306/diplom1
-    user: root
-    password: tqw1467gheK
+    url: jdbc:mysql://${DATABASE_URL}/diplom1
+    user: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
 
   jpa:
     show-sql: true

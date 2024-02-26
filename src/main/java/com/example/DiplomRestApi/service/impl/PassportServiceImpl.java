@@ -91,6 +91,7 @@ public class PassportServiceImpl implements PassportService {
         passportToUpdate.setNumber(updateDto.getNumber());
         passportToUpdate.setSeries(updateDto.getSeries());
         passportToUpdate.setIssueDate(updateDto.getIssueDate());
+        passportToUpdate.setIssuingOrganization(updateDto.getIssuingOrganization());
 
         if (updateDto.getImage() != null){
             imageService.deleteImage(passportToUpdate.getImageURL());

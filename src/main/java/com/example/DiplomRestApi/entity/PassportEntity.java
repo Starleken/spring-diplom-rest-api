@@ -25,6 +25,9 @@ public class PassportEntity {
     @Column(name = "issue_date", nullable = false)
     private Date issueDate;
 
+    @Column(name = "issuing_organization", nullable = false)
+    private String issuingOrganization;
+
     @Column(name = "imageURL", nullable = true)
     private String imageURL;
 
@@ -32,7 +35,4 @@ public class PassportEntity {
     @JoinColumn(name = "student_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private StudentEntity student;
-
-    @Column(name = "issuing_organization", nullable = false)
-    private String issuingOrganization;
 }

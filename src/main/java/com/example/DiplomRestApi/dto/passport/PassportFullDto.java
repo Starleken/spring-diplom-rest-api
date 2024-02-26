@@ -12,6 +12,7 @@ public class PassportFullDto {
     private String series;
     private String number;
     private Date issueDate;
+    private String issuingOrganization;
     private StudentEntity student;
     private String imageURL;
 }

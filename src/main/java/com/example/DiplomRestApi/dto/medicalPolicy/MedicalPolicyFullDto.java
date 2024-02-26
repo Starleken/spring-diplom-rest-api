@@ -9,5 +9,6 @@ public class MedicalPolicyFullDto {
     private Long id;
     private String number;
     private String imageURL;
+    private String issuingOrganization;
     private StudentFullDto student;
 }

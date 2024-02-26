@@ -11,6 +11,7 @@ public class StudentFullDto {
     private Long id;
     private String registrationAddress;
     private String residentialAddress;
+    private String phone;
     private EducationFormFullDto educationForm;
     private UserFullDto user;
     private GroupFullDto group;

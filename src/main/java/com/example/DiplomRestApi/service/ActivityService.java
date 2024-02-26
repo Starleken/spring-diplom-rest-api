@@ -8,13 +8,13 @@ import com.example.DiplomRestApi.entity.ActivityEntity;
 import java.util.List;
 
 public interface ActivityService {
-    public List<ActivityFullDto> findAll();
+    List<ActivityFullDto> findAll();
 
-    public ActivityFullDto save(ActivityCreateDto createDto);
+    ActivityFullDto save(ActivityCreateDto createDto);
 
-    public ActivityFullDto update(ActivityUpdateDto updateDto);
+    ActivityFullDto update(ActivityUpdateDto updateDto);
 
-    public List<ActivityFullDto> findActivitiesByStudent(long studentId);
+    List<ActivityFullDto> findActivitiesByStudent(long studentId);
 
-    public void deleteById(Long id);
+    void deleteById(Long id);
 }

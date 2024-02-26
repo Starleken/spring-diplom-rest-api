@@ -6,5 +6,5 @@ import com.example.DiplomRestApi.entity.EducationFormEntity;
 import java.util.List;
 
 public interface EducationFormService {
-    public List<EducationFormFullDto> findAll();
+    List<EducationFormFullDto> findAll();
 }

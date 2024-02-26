@@ -14,6 +14,7 @@ public class ActivityFullDto {
     private String name;
     private Date date;
     private Integer place;
+    private String eventPlace;
     private String imageUrl;
     private ActivityTypeFullDto activityType;
     private ActivityLevelFullDto activityLevel;

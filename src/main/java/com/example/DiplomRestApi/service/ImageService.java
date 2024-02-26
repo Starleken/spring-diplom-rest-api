@@ -5,9 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageService {
 
-    public byte[] getImage(String imageName) throws Exception;
+    Resource getImage(String imageName) throws Exception;
 
-    public String saveImage(MultipartFile imageFile);
+    String saveImage(MultipartFile imageFile);
 
-    public void deleteImage(String imageName);
+    void deleteImage(String imageName);
 }

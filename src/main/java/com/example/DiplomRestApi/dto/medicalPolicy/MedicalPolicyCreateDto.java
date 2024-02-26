@@ -8,5 +8,6 @@ public class MedicalPolicyCreateDto {
 
     private String number;
     private MultipartFile image;
+    private String issuingOrganization;
     private Long studentId;
 }

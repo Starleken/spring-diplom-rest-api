@@ -89,6 +89,7 @@ public class MedicalPolicyServiceImpl implements MedicalPolicyService {
 
         MedicalPolicyEntity entityToUpdate = findedEntity.get();
         entityToUpdate.setNumber(updateDto.getNumber());
+        entityToUpdate.setIssuingOrganization(updateDto.getIssuingOrganization());
 
         if (updateDto.getImage() != null){
             imageService.deleteImage(entityToUpdate.getImageURL());

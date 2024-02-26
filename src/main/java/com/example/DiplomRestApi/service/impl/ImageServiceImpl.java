@@ -34,13 +34,14 @@ public class ImageServiceImpl implements ImageService {
 
 
     @Override
-    public byte[] getImage(String imageName) throws Exception{
+    public Resource getImage(String imageName) throws Exception{
         String absolutePath = new File("src/main/resources/static/images").getAbsolutePath();
         Path path = Paths.get(absolutePath + "/" + imageName);
-
-        byte[] bytes = new UrlResource(path.toUri()).getContentAsByteArray();
-
-        return bytes;
+        Resource resource = new UrlResource(path.toUri());
+        return resource;
+//        byte[] bytes = new UrlResource(path.toUri()).getContentAsByteArray();
+//
+//        return bytes;
     }
 
     @Override

@@ -6,5 +6,5 @@ import com.example.DiplomRestApi.entity.ActivityTypeEntity;
 import java.util.List;
 
 public interface ActivityTypeService {
-    public List<ActivityTypeFullDto> findAll();
+    List<ActivityTypeFullDto> findAll();
 }

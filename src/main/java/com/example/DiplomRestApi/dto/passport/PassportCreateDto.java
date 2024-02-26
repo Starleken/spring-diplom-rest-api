@@ -11,6 +11,7 @@ public class PassportCreateDto {
     private String series;
     private String number;
     private Date issueDate;
+    private String issuingOrganization;
     private Long studentId;
     private MultipartFile image;
 }

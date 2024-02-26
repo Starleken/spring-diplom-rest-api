@@ -6,6 +6,7 @@ import com.example.DiplomRestApi.dto.activity.ActivityUpdateDto;
 import com.example.DiplomRestApi.entity.ActivityEntity;
 import com.example.DiplomRestApi.service.ActivityService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "activity")
 @RequiredArgsConstructor
+@Slf4j
 public class ActivityController {
 
     private final ActivityService activityService;
@@ -32,16 +34,25 @@ public class ActivityController {
 
     @PostMapping
     public ResponseEntity<ActivityFullDto> save(@ModelAttribute ActivityCreateDto createDto){
-        return new ResponseEntity<>(activityService.save(createDto), HttpStatus.OK);
+        log.info("User create request: {}", createDto);
+        var createdActivity = activityService.save(createDto);
+        log.info("Created activity: {}", createdActivity);
+
+        return new ResponseEntity<>(createdActivity, HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<ActivityFullDto> update(@ModelAttribute ActivityUpdateDto updateDto){
-        return new ResponseEntity<>(activityService.update(updateDto), HttpStatus.OK);
+        log.info("User update request: {}", updateDto);
+        var updated = activityService.update(updateDto);
+        log.info("Updated activity: {}", updated);
+
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable Long id){
+    public ResponseEntity<Object> deleteById(@PathVariable Long id) {
         activityService.deleteById(id);
         return new ResponseEntity(HttpStatus.OK);
     }

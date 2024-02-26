@@ -8,17 +8,17 @@ import com.example.DiplomRestApi.entity.StudentEntity;
 import java.util.List;
 
 public interface StudentService {
-    public List<StudentFullDto> findAll();
+    List<StudentFullDto> findAll();
 
-    public StudentFullDto findById(Long id);
+    StudentFullDto findById(Long id);
 
-    public StudentFullDto create(StudentCreateDto createDto);
+    StudentFullDto create(StudentCreateDto createDto);
 
-    public StudentFullDto update(StudentUpdateDto updateDto);
+    StudentFullDto update(StudentUpdateDto updateDto);
 
-    public List<StudentFullDto> findStudentsByGroup(Long groupId);
+    List<StudentFullDto> findStudentsByGroup(Long groupId);
 
-    public StudentFullDto findStudentByUser(Long userId);
+    StudentFullDto findStudentByUser(Long userId);
 
-    public void deleteById(Long id);
+    void deleteById(Long id);
 }

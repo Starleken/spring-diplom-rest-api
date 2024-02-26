@@ -1,0 +1,33 @@
+version: 1.0.0
+services:
+  mysql-database:
+    volumes:
+      - image_data:/var/lib/mysql
+    networks:
+      - diplom_network
+    image: mysql:8.0.22
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=diplom1
+      - MYSQL_ROOT_PASSWORD=root
+  diplom-service:
+      image: diplom-api:1.0.0
+      container_name: "diplom-api"
+      networks:
+        - diplom_network
+      ports:
+        - 8080:8080
+      environment:
+        - DATABASE_URL=mysql-database:3306
+        - DATABASE_USER=root
+        - DATABASE_PASSWORD=root
+      depends_on:
+        - 'mysql-database'
+      restart: on-failure
+volumes:
+  image_data:
+networks:
+  diplom_network:
+    driver: bridge
+    name: diplom_network

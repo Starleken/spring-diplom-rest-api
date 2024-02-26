@@ -12,5 +12,6 @@ public class PassportUpdateDto {
     private String series;
     private String number;
     private Date issueDate;
+    private String issuingOrganization;
     private MultipartFile image;
 }

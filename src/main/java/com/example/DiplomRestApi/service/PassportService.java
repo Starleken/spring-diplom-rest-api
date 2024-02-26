@@ -7,12 +7,12 @@ import com.example.DiplomRestApi.dto.passport.PassportUpdateDto;
 import java.util.List;
 
 public interface PassportService{
-    public List<PassportFullDto> findAll();
-    public List<PassportFullDto> findAllByStudent(Long studentId);
+    List<PassportFullDto> findAll();
+    List<PassportFullDto> findAllByStudent(Long studentId);
 
-    public PassportFullDto create(PassportCreateDto passportToSaveDto);
+    PassportFullDto create(PassportCreateDto passportToSaveDto);
 
-    public PassportFullDto update(PassportUpdateDto passportToUpdateDto);
+    PassportFullDto update(PassportUpdateDto passportToUpdateDto);
 
-    public void deleteById(Long id);
+    void deleteById(Long id);
 }
