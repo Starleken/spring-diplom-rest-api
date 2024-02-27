@@ -12,8 +12,8 @@ services:
       - MYSQL_DATABASE=diplom1
       - MYSQL_ROOT_PASSWORD=root
   diplom-service:
-      image: diplom-api:1.0.0
-      container_name: "diplom-api"
+      image: starleken/diplom-api:latest
+      container_name: "diplom-service"
       networks:
         - diplom_network
       ports:
