@@ -11,9 +11,9 @@ import org.mapstruct.Mapping;
 public interface ActivityMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "imageURL", ignore = true)
+    @Mapping(target = "image", ignore = true)
     ActivityEntity mapToEntity(ActivityCreateDto createDTO);
 
-    @Mapping(target = "imageUrl", source = "imageURL")
+    @Mapping(target = "image", source = "imageURL")
     ActivityFullDto mapToDto(ActivityEntity entity);
 }

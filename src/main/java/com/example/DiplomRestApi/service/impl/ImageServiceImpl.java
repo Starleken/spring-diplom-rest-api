@@ -59,7 +59,7 @@ public class ImageServiceImpl implements ImageService {
             return null;
         }
 
-        return "http://127.0.0.1:8080/api/v1/image/" + uuid + ".jpg";
+        return "http://147.45.102.27/api/v1/image/" + uuid + ".jpg";
     }
 
     @Override
