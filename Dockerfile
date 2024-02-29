@@ -1,5 +1,6 @@
 FROM openjdk:17
 
 ADD target/*.jar /app.jar
+RUN mkdir "images"
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

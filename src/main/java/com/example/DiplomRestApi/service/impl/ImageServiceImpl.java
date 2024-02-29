@@ -26,16 +26,9 @@ import java.util.UUID;
 @Slf4j
 public class ImageServiceImpl implements ImageService {
 
-//    private final String folderPath = "src/main/resouces/images/";
-
-    private String accessKeyId = "YCAJEgPfPYYgZh-aeJmTJCpS2";
-    private String secretAccessKey = "YCO6aMVzXHhwpkmwYJ_mRuAtZdhxRdxg8yMz8Mpe";
-    private String bucketName = "cloud-image-storage";
-
-
     @Override
     public Resource getImage(String imageName) throws Exception{
-        String absolutePath = new File("src/main/resources/static/images").getAbsolutePath();
+        String absolutePath = new File("images").getAbsolutePath();
         Path path = Paths.get(absolutePath + "/" + imageName);
         Resource resource = new UrlResource(path.toUri());
         return resource;
@@ -51,7 +44,7 @@ public class ImageServiceImpl implements ImageService {
 
         try{
             byte[] bytes = imageFile.getBytes();
-            String absolutePath = new File("src/main/resources/static/images").getAbsolutePath();
+            String absolutePath = new File("images").getAbsolutePath();
             Path path = Paths.get(absolutePath + "/" +uuid + ".jpg");
             Path savedPath = Files.write(path, bytes);
         } catch (Exception ex) {
@@ -64,7 +57,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void deleteImage(String imageURL) {
-        String absolutePath = new File("src/main/resources/static/images").getAbsolutePath();
+        String absolutePath = new File("images").getAbsolutePath();
 
         String[] splited = imageURL.split("/");
         Path path = Paths.get(absolutePath + "/" + splited[splited.length-1]);

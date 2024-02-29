@@ -2,7 +2,7 @@ version: 1.0.0
 services:
   mysql-database:
     volumes:
-      - image_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
     networks:
       - diplom_network
     image: mysql:8.0.22
@@ -14,6 +14,8 @@ services:
   diplom-service:
       image: starleken/diplom-api:latest
       container_name: "diplom-service"
+      volumes:
+        - db_data:/images
       networks:
         - diplom_network
       ports:
@@ -26,7 +28,7 @@ services:
         - 'mysql-database'
       restart: on-failure
 volumes:
-  image_data:
+  db_data:
 networks:
   diplom_network:
     driver: bridge
