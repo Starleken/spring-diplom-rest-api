@@ -11,7 +11,7 @@ public interface FluorographyService {
 
     List<FluorographyFullDto> findAll();
 
-    List<FluorographyFullDto> findAllByStudent(Long studentId);
+    FluorographyFullDto findByStudent(Long studentId);
 
     FluorographyFullDto create(FluorographyCreateDto createDto);
 

@@ -42,7 +42,7 @@ public class FluorographyServiceImpl implements FluorographyService {
     }
 
     @Override
-    public List<FluorographyFullDto> findAllByStudent(Long studentId) {
+    public FluorographyFullDto findByStudent(Long studentId) {
         Optional<StudentEntity> findedStudent = studentRepository.findById(studentId);
 
         //TODO
@@ -50,13 +50,8 @@ public class FluorographyServiceImpl implements FluorographyService {
             return null;
         }
 
-        List<FluorographyEntity> entities = fluorographyRepository.findAllByStudent(findedStudent.get());
-
-        List<FluorographyFullDto> dtos = entities.stream()
-                .map(mapper::mapToDto)
-                .collect(Collectors.toList());
-
-        return dtos;
+        Optional<FluorographyEntity> entity = fluorographyRepository.findByStudent(findedStudent.get());
+        return entity.map(mapper::mapToDto).orElse(null);
     }
 
     @Override

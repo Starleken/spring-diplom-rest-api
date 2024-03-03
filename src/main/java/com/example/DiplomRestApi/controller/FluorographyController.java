@@ -3,10 +3,8 @@ package com.example.DiplomRestApi.controller;
 import com.example.DiplomRestApi.dto.fluorography.FluorographyCreateDto;
 import com.example.DiplomRestApi.dto.fluorography.FluorographyFullDto;
 import com.example.DiplomRestApi.dto.fluorography.FluorographyUpdateDto;
-import com.example.DiplomRestApi.entity.FluorographyEntity;
 import com.example.DiplomRestApi.service.FluorographyService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +24,8 @@ public class FluorographyController {
     }
 
     @GetMapping(path = "/student")
-    public ResponseEntity<List<FluorographyFullDto>> findAllByStudent(@RequestParam Long studentId){
-        return new ResponseEntity<>(fluorographyService.findAllByStudent(studentId), HttpStatus.OK);
+    public ResponseEntity<FluorographyFullDto> findByStudent(@RequestParam Long studentId){
+        return new ResponseEntity<>(fluorographyService.findByStudent(studentId), HttpStatus.OK);
     }
 
     @PostMapping()

@@ -50,10 +50,9 @@ public class PassportServiceImpl implements PassportService {
             return null;
         }
 
-        PassportEntity entity = passportRepository.findByStudent(findedStudent.get())
-                .orElseThrow(() -> new EntityNotFoundException("Passport is not found"));
+        Optional<PassportEntity> entity = passportRepository.findByStudent(findedStudent.get());
+        return entity.map(passportMapper::mapToDto).orElse(null);
 
-        return passportMapper.mapToDto(entity);
     }
 
     @Override

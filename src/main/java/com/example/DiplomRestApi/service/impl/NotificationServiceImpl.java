@@ -25,7 +25,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public List<String> getByStudentId(Long studentId) {
         PassportFullDto passport = passportService.findByStudent(studentId);
-        FluorographyFullDto fluorography = fluorographyService.findAllByStudent(studentId).get(0);
+        FluorographyFullDto fluorography = fluorographyService.findByStudent(studentId);
 
         List<String> notifications = new ArrayList<>();
 
