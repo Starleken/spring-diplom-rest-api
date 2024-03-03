@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PassportService{
     List<PassportFullDto> findAll();
-    List<PassportFullDto> findAllByStudent(Long studentId);
+    PassportFullDto findByStudent(Long studentId);
 
     PassportFullDto create(PassportCreateDto passportToSaveDto);
 

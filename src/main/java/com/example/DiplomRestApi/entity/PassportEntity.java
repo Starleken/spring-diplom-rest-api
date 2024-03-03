@@ -31,7 +31,7 @@ public class PassportEntity {
     @Column(name = "imageURL", nullable = true)
     private String imageURL;
 
-    @ManyToOne()
+    @OneToOne()
     @JoinColumn(name = "student_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private StudentEntity student;

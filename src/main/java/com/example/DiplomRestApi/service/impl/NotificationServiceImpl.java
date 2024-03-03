@@ -5,12 +5,10 @@ import com.example.DiplomRestApi.dto.passport.PassportFullDto;
 import com.example.DiplomRestApi.service.FluorographyService;
 import com.example.DiplomRestApi.service.NotificationService;
 import com.example.DiplomRestApi.service.PassportService;
-import com.example.DiplomRestApi.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public List<String> getByStudentId(Long studentId) {
-        PassportFullDto passport = passportService.findAllByStudent(studentId).get(0);
+        PassportFullDto passport = passportService.findByStudent(studentId);
         FluorographyFullDto fluorography = fluorographyService.findAllByStudent(studentId).get(0);
 
         List<String> notifications = new ArrayList<>();

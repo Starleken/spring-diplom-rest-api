@@ -13,7 +13,6 @@ import com.example.DiplomRestApi.service.ImageService;
 import com.example.DiplomRestApi.service.PassportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,7 +42,7 @@ public class PassportServiceImpl implements PassportService {
     }
 
     @Override
-    public List<PassportFullDto> findAllByStudent(Long studentId){
+    public PassportFullDto findByStudent(Long studentId){
         Optional<StudentEntity> findedStudent = studentRepository.findById(studentId);
 
         //TODO
@@ -51,13 +50,10 @@ public class PassportServiceImpl implements PassportService {
             return null;
         }
 
-        List<PassportEntity> entities = passportRepository.findAllByStudent(findedStudent.get());
+        PassportEntity entity = passportRepository.findByStudent(findedStudent.get())
+                .orElseThrow(() -> new EntityNotFoundException("Passport is not found"));
 
-        List<PassportFullDto> dtos = entities.stream()
-                .map(passportMapper::mapToDto)
-                .collect(Collectors.toList());
-
-        return dtos;
+        return passportMapper.mapToDto(entity);
     }
 
     @Override

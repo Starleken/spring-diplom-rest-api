@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PassportRepository extends JpaRepository<PassportEntity, Long> {
-    public List<PassportEntity> findAllByStudent(StudentEntity student);
+    public Optional<PassportEntity> findByStudent(StudentEntity student);
 }

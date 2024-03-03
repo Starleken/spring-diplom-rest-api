@@ -6,7 +6,6 @@ import com.example.DiplomRestApi.dto.passport.PassportUpdateDto;
 import com.example.DiplomRestApi.service.PassportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +25,8 @@ public class PassportController {
     }
 
     @GetMapping(path = "/student")
-    public ResponseEntity<List<PassportFullDto>> findAllByStudent(@RequestParam Long studentId){
-        return new ResponseEntity<>(passportService.findAllByStudent(studentId), HttpStatus.OK);
+    public ResponseEntity<PassportFullDto> findByStudent(@RequestParam Long studentId){
+        return new ResponseEntity<>(passportService.findByStudent(studentId), HttpStatus.OK);
     }
 
     @PostMapping()
