@@ -29,20 +29,28 @@ public class NotificationServiceImpl implements NotificationService {
 
         List<String> notifications = new ArrayList<>();
 
-        LocalDateTime convertedPassportDate = LocalDateTime.of(passport.getIssueDate().toLocalDate(), LocalTime.now());
-        if (checkIfDateExpired(convertedPassportDate, 6)){
-            notifications.add("Требуется обновить паспорт");
+        if (passport != null) {
+            LocalDateTime convertedPassportDate = LocalDateTime.of(passport.getIssueDate().toLocalDate(), LocalTime.now());
+            if (checkIfDateExpired(convertedPassportDate, 6)){
+                notifications.add("Требуется обновить паспорт");
+            }
+        } else {
+            notifications.add("Требуется добавить паспорт");
         }
 
-        LocalDateTime convertedFluDate = LocalDateTime.of(fluorography.getCreateDate().toLocalDate(), LocalTime.now());
-        if (checkIfDateExpired(convertedFluDate, 1)){
-            notifications.add("Требуется обновить флюорографию");
+        if (fluorography != null) {
+            LocalDateTime convertedFluDate = LocalDateTime.of(fluorography.getCreateDate().toLocalDate(), LocalTime.now());
+            if (checkIfDateExpired(convertedFluDate, 1)){
+                notifications.add("Требуется обновить флюорографию");
+            }
+        } else {
+            notifications.add("Требуется добавить флюорографию");
         }
 
         return notifications;
     }
 
     private boolean checkIfDateExpired(LocalDateTime sourceDate, int years){
-        return sourceDate.plusYears(6).isBefore(LocalDateTime.now());
+        return sourceDate.plusYears(years).isBefore(LocalDateTime.now());
     }
 }
