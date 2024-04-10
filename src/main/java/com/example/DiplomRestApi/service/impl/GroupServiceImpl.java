@@ -1,5 +1,6 @@
 package com.example.DiplomRestApi.service.impl;
 
+import com.example.DiplomRestApi.dto.group.GroupCreateDto;
 import com.example.DiplomRestApi.dto.group.GroupFullDto;
 import com.example.DiplomRestApi.entity.GroupEntity;
 import com.example.DiplomRestApi.mapper.GroupMapper;
@@ -29,7 +30,11 @@ public class GroupServiceImpl implements GroupService {
         return dtos;
     }
 
-    public GroupEntity save(GroupEntity groupEntity){
-        return groupRepository.save(groupEntity);
+    @Override
+    public GroupFullDto save(GroupCreateDto createDto) {
+        var group = mapper.mapToEntity(createDto);
+        var saved = groupRepository.save(group);
+
+        return mapper.mapToDto(saved);
     }
 }

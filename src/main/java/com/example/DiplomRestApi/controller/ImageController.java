@@ -14,14 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "image")
-@Slf4j
 public class ImageController {
 
     private final ImageService imageService;
 
+    //TODO
     @GetMapping("/{imageName}")
-    public ResponseEntity<Resource> loadImage(@PathVariable String imageName){
-        log.info(imageName);
+    public ResponseEntity<Resource> loadImage(@PathVariable String imageName) {
         try{
             return ResponseEntity.ok()
                     .contentType(MediaType.IMAGE_PNG)
