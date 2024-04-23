@@ -1,12 +1,14 @@
 package com.example.DiplomRestApi.dto.activity;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Date;
+import java.util.Date;
 
 
 @Data
+@Builder
 public class ActivityCreateDto {
 
     private String name;

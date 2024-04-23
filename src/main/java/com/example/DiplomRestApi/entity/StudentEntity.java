@@ -3,6 +3,8 @@ package com.example.DiplomRestApi.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -20,7 +22,7 @@ public class StudentEntity {
     @Column(name = "residentialAddress")
     private String residentialAddress;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "educationForm_id")
     private EducationFormEntity educationForm;
 
@@ -31,7 +33,10 @@ public class StudentEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "group_id")
     private GroupEntity group;
+
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<ActivityEntity> activities = new ArrayList<>();
 }

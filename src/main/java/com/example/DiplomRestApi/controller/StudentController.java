@@ -1,5 +1,6 @@
 package com.example.DiplomRestApi.controller;
 
+import com.example.DiplomRestApi.dto.student.StudentActivityDto;
 import com.example.DiplomRestApi.dto.student.StudentCreateDto;
 import com.example.DiplomRestApi.dto.student.StudentFullDto;
 import com.example.DiplomRestApi.dto.student.StudentUpdateDto;
@@ -29,6 +30,15 @@ public class StudentController {
         log.info("Find all students requested");
         var entities = studentService.findAll();
         log.info("The number of students found: {}", entities.size());
+
+        return new ResponseEntity<>(entities, HttpStatus.OK);
+    }
+
+    @GetMapping("/activity")
+    public ResponseEntity<List<StudentActivityDto>> findAllWithActivities() {
+        log.info("Find all with activity students requested");
+        var entities = studentService.findAllWithActivities();
+        log.info("The number of students with activity found: {}", entities.size());
 
         return new ResponseEntity<>(entities, HttpStatus.OK);
     }

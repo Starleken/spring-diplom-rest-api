@@ -1,11 +1,5 @@
 package com.example.DiplomRestApi.service.impl;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.DiplomRestApi.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -13,10 +7,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,9 +23,6 @@ public class ImageServiceImpl implements ImageService {
         Path path = Paths.get(absolutePath + "/" + imageName);
         Resource resource = new UrlResource(path.toUri());
         return resource;
-//        byte[] bytes = new UrlResource(path.toUri()).getContentAsByteArray();
-//
-//        return bytes;
     }
 
     @Override
@@ -52,7 +40,7 @@ public class ImageServiceImpl implements ImageService {
             return null;
         }
 
-        return "http://147.45.102.27/api/v1/image/" + uuid + ".jpg";
+        return "http://89.23.115.9/api/v1/image/" + uuid + ".jpg";
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.DiplomRestApi.service;
 
+import com.example.DiplomRestApi.dto.student.StudentActivityDto;
 import com.example.DiplomRestApi.dto.student.StudentCreateDto;
 import com.example.DiplomRestApi.dto.student.StudentFullDto;
 import com.example.DiplomRestApi.dto.student.StudentUpdateDto;
@@ -9,6 +10,8 @@ import java.util.List;
 
 public interface StudentService {
     List<StudentFullDto> findAll();
+
+    List<StudentActivityDto> findAllWithActivities();
 
     StudentFullDto findById(Long id);
 

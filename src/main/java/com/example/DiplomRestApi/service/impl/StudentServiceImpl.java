@@ -1,5 +1,6 @@
 package com.example.DiplomRestApi.service.impl;
 
+import com.example.DiplomRestApi.dto.student.StudentActivityDto;
 import com.example.DiplomRestApi.dto.student.StudentCreateDto;
 import com.example.DiplomRestApi.dto.student.StudentFullDto;
 import com.example.DiplomRestApi.dto.student.StudentUpdateDto;
@@ -33,6 +34,17 @@ public class StudentServiceImpl implements StudentService {
 
         List<StudentFullDto> dtos = entities.stream()
                 .map(mapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return dtos;
+    }
+
+    @Override
+    public List<StudentActivityDto> findAllWithActivities() {
+        List<StudentEntity> entities = studentRepository.findAll();
+
+        List<StudentActivityDto> dtos = entities.stream()
+                .map(mapper::mapToWithActivityDto)
                 .collect(Collectors.toList());
 
         return dtos;

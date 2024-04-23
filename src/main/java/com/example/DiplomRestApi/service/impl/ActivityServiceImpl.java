@@ -44,10 +44,8 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public ActivityFullDto save(ActivityCreateDto createDto) {
         ActivityEntity activity = activityMapper.mapToEntity(createDto);
-        String imagePath = imageService.saveImage(createDto.getImage());
-        activity.setImageURL(imagePath);
-
-        log.info(createDto.toString());
+//        String imagePath = imageService.saveImage(createDto.getImage());
+//        activity.setImageURL(imagePath);
 
         Optional<StudentEntity> findedStudent = studentRepository.findById(createDto.getStudentId());
         if (findedStudent.isEmpty()){
