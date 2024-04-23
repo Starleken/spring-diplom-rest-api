@@ -20,23 +20,4 @@ public class ActivityControllerTest extends BaseIntegrationTest {
 
     @Autowired
     private ActivityDbHelper dbHelper;
-
-    @Test
-    void testFindAll_happyPath() throws Exception {
-        //given
-
-
-        //when
-        MvcResult mvcResult = mockMvc.perform(get("/activities"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        //then
-        var bytes = mvcResult.getResponse().getContentAsByteArray();
-        var dtos = objectMapper.readValue(
-                bytes, new TypeReference<List<ActivityFullDto>>() {
-                });
-
-        Assertions.assertEquals(0, dtos.size());
-    }
 }

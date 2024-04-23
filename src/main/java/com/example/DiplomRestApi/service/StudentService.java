@@ -13,6 +13,8 @@ public interface StudentService {
 
     List<StudentActivityDto> findAllWithActivities();
 
+    List<StudentActivityDto> findByGroupWithActivities(long groupId);
+
     StudentFullDto findById(Long id);
 
     StudentFullDto create(StudentCreateDto createDto);

@@ -51,6 +51,24 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<StudentActivityDto> findByGroupWithActivities(long groupId) {
+        Optional<GroupEntity> findedGroup = groupRepository.findById(groupId);
+
+        //TODO
+        if (findedGroup.isEmpty()){
+            return null;
+        }
+
+        List<StudentEntity> entities = studentRepository.findStudentsByGroup(findedGroup.get());
+
+        List<StudentActivityDto> dtos = entities.stream()
+                .map(mapper::mapToWithActivityDto)
+                .collect(Collectors.toList());
+
+        return dtos;
+    }
+
+    @Override
     public StudentFullDto findById(Long id) {
         Optional<StudentEntity> finded = studentRepository.findById(id);
         if (finded.isEmpty()){

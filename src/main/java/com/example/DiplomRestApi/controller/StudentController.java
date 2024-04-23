@@ -43,6 +43,15 @@ public class StudentController {
         return new ResponseEntity<>(entities, HttpStatus.OK);
     }
 
+    @GetMapping("/activity/group/{groupId}")
+    public ResponseEntity<List<StudentActivityDto>> findAllWithActivities(@PathVariable long groupId) {
+        log.info("Find students by group with activity students requested");
+        var entities = studentService.findByGroupWithActivities(groupId);
+        log.info("The number of students by group with activity found: {}", entities.size());
+
+        return new ResponseEntity<>(entities, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<StudentFullDto> findById(@PathVariable Long id) {
         log.info("Find student by id requested. id: {}", id);
