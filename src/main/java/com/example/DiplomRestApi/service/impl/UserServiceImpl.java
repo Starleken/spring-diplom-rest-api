@@ -1,9 +1,12 @@
 package com.example.DiplomRestApi.service.impl;
 
+import com.example.DiplomRestApi.dto.user.UserCreateDto;
 import com.example.DiplomRestApi.dto.user.UserFullDto;
+import com.example.DiplomRestApi.entity.RoleEntity;
 import com.example.DiplomRestApi.entity.UserEntity;
 import com.example.DiplomRestApi.exception.EntityNotFoundException;
 import com.example.DiplomRestApi.mapper.UserMapper;
+import com.example.DiplomRestApi.repository.RoleRepository;
 import com.example.DiplomRestApi.repository.UserRepository;
 import com.example.DiplomRestApi.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final UserMapper mapper;
+    private final RoleRepository roleRepository;
 
     public List<UserFullDto> findAll(){
         List<UserEntity> entities = userRepository.findAll();
@@ -41,5 +45,16 @@ public class UserServiceImpl implements UserService {
         }
 
         return mapper.mapToDto(findedUser.get());
+    }
+
+    @Override
+    public UserFullDto create(UserCreateDto createDto) {
+        var user = mapper.mapToEntity(createDto);
+        RoleEntity role = roleRepository.findById(createDto.getRoleId())
+                .orElseThrow(() -> new EntityNotFoundException("Role is not found"));
+
+        user.setRole(role);
+
+        return mapper.mapToDto(userRepository.save(user));
     }
 }

@@ -1,5 +1,6 @@
 package com.example.DiplomRestApi.controller;
 
+import com.example.DiplomRestApi.dto.user.UserCreateDto;
 import com.example.DiplomRestApi.dto.user.UserFullDto;
 import com.example.DiplomRestApi.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,15 @@ public class UserController {
         log.info("User by login and password found: {}", entity);
 
         return new ResponseEntity<>(entity, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<UserFullDto> create(@RequestBody UserCreateDto createDto) {
+        log.info("Create user request: {}", createDto);
+        var entity = userService.create(createDto);
+        log.info("Created user: {}", entity);
+
+        return new ResponseEntity<>(entity, HttpStatus.CREATED);
     }
 
 }

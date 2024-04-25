@@ -16,10 +16,10 @@ public class StudentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "registrationAddress")
+    @Column(name = "registration_address")
     private String registrationAddress;
 
-    @Column(name = "residentialAddress")
+    @Column(name = "residential_address")
     private String residentialAddress;
 
     @ManyToOne
