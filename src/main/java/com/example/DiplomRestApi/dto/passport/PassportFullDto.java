@@ -1,5 +1,6 @@
 package com.example.DiplomRestApi.dto.passport;
 
+import com.example.DiplomRestApi.dto.student.StudentFullDto;
 import com.example.DiplomRestApi.entity.StudentEntity;
 import lombok.Data;
 
@@ -13,6 +14,6 @@ public class PassportFullDto {
     private String number;
     private Date issueDate;
     private String issuingOrganization;
-    private StudentEntity student;
+    private StudentFullDto student;
     private String imageURL;
 }

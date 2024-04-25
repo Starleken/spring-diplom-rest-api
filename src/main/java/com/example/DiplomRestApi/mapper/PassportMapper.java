@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {StudentMapper.class})
 public interface PassportMapper {
 
     public List<PassportFullDto> mapToDtoList(List<PassportEntity> entities);
