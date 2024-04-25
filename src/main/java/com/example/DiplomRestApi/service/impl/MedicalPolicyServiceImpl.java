@@ -3,6 +3,7 @@ package com.example.DiplomRestApi.service.impl;
 import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyCreateDto;
 import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyFullDto;
 import com.example.DiplomRestApi.dto.medicalPolicy.MedicalPolicyUpdateDto;
+import com.example.DiplomRestApi.entity.FluorographyEntity;
 import com.example.DiplomRestApi.entity.MedicalPolicyEntity;
 import com.example.DiplomRestApi.entity.StudentEntity;
 import com.example.DiplomRestApi.exception.EntityNotFoundException;
@@ -41,7 +42,7 @@ public class MedicalPolicyServiceImpl implements MedicalPolicyService {
     }
 
     @Override
-    public List<MedicalPolicyFullDto> findAllByStudent(Long studentId) {
+    public MedicalPolicyFullDto findByStudent(Long studentId) {
         Optional<StudentEntity> findedStudent = studentRepository.findById(studentId);
 
         //TODO
@@ -49,13 +50,8 @@ public class MedicalPolicyServiceImpl implements MedicalPolicyService {
             return null;
         }
 
-        List<MedicalPolicyEntity> entities = medicalPolicyRepository.findAllByStudent(findedStudent.get());
-
-        List<MedicalPolicyFullDto> dtos = entities.stream()
-                .map(mapper::mapToDto)
-                .collect(Collectors.toList());
-
-        return dtos;
+        Optional<MedicalPolicyEntity> entity = medicalPolicyRepository.findByStudent(findedStudent.get());
+        return entity.map(mapper::mapToDto).orElse(null);
     }
 
     @Override

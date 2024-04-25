@@ -31,12 +31,12 @@ public class MedicalPolicyController {
     }
 
     @GetMapping("/student")
-    public ResponseEntity<List<MedicalPolicyFullDto>> findAllByStudent(@RequestParam Long studentId) {
-        log.info("Find medicalPolicies by student requested. StudentId: {}", studentId);
-        var entities = medicalPolicyService.findAllByStudent(studentId);
-        log.info("The number of medicalPolicies by studentId {} found: {}", studentId, entities.size());
+    public ResponseEntity<MedicalPolicyFullDto> findByStudent(@RequestParam Long studentId) {
+        log.info("Find medicalPolicy by student requested. StudentId: {}", studentId);
+        var entity = medicalPolicyService.findByStudent(studentId);
+        log.info("medicalPolicy found by studentId {}: {}", studentId, entity);
 
-        return new ResponseEntity<>(entities, HttpStatus.OK);
+        return new ResponseEntity<>(entity, HttpStatus.OK);
     }
 
     @PostMapping

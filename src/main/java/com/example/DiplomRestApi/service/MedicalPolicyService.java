@@ -11,7 +11,7 @@ public interface MedicalPolicyService {
 
     List<MedicalPolicyFullDto> findAll();
 
-    List<MedicalPolicyFullDto> findAllByStudent(Long studentId);
+    MedicalPolicyFullDto findByStudent(Long studentId);
 
     MedicalPolicyFullDto create(MedicalPolicyCreateDto createDto);
 
