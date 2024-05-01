@@ -24,5 +24,4 @@ jobs:
         with:
           context: .
           push: true
-          target: final
           tags: ${{ secrets.DOCKER_USERNAME }}/diplom-api:latest
