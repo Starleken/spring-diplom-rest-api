@@ -20,4 +20,9 @@ public class ActivityControllerTest extends BaseIntegrationTest {
 
     @Autowired
     private ActivityDbHelper dbHelper;
+
+    @Test
+    void testFailure_happyPath() {
+        Assertions.assertEquals(true, false);
+    }
 }
