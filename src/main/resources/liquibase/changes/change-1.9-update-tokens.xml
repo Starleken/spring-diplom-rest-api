@@ -1,0 +1,21 @@
+
+
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1.0.0" author="Starleken">
+        <sql>
+            alter table refresh_tokens
+            drop foreign key FK_refresh_tokens_user_id;
+
+            alter table refresh_tokens
+                add constraint FK_refresh_tokens_user_id
+                    foreign key (user_id) references users (id)
+                        on delete cascade;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

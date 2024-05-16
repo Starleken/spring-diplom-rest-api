@@ -1,5 +1,9 @@
 package com.example.DiplomRestApi.controller;
 
+import com.example.DiplomRestApi.dto.login.LoginRequestDto;
+import com.example.DiplomRestApi.dto.login.LoginResponseDto;
+import com.example.DiplomRestApi.dto.token.RefreshTokenRequestDto;
+import com.example.DiplomRestApi.dto.token.RefreshTokenResponseDto;
 import com.example.DiplomRestApi.dto.user.UserCreateDto;
 import com.example.DiplomRestApi.dto.user.UserFullDto;
 import com.example.DiplomRestApi.service.UserService;
@@ -46,4 +50,21 @@ public class UserController {
         return new ResponseEntity<>(entity, HttpStatus.CREATED);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginDto) {
+        log.info("Login requested. Email: {}", loginDto.getLogin());
+        var response = userService.login(loginDto);
+        log.info("User is logged in. Id: {}", response.getUserId());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/tokens/refresh")
+    public ResponseEntity<RefreshTokenResponseDto> refresh(@RequestBody RefreshTokenRequestDto refreshDto) {
+        log.info("Refresh requested");
+        var response = userService.refresh(refreshDto);
+        log.info("Token refreshed");
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

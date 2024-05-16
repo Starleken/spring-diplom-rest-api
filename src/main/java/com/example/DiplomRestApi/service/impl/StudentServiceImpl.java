@@ -30,9 +30,9 @@ public class StudentServiceImpl implements StudentService {
     private final StudentMapper mapper;
 
     public List<StudentFullDto> findAll(){
-        List<StudentEntity> entities = studentRepository.findAll();
+        var entities = studentRepository.findAll();
 
-        List<StudentFullDto> dtos = entities.stream()
+        var dtos = entities.stream()
                 .map(mapper::mapToDto)
                 .collect(Collectors.toList());
 
@@ -41,9 +41,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentActivityDto> findAllWithActivities() {
-        List<StudentEntity> entities = studentRepository.findAll();
+        var entities = studentRepository.findAll();
 
-        List<StudentActivityDto> dtos = entities.stream()
+        var dtos = entities.stream()
                 .map(mapper::mapToWithActivityDto)
                 .collect(Collectors.toList());
 
@@ -52,16 +52,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentActivityDto> findByGroupWithActivities(long groupId) {
-        Optional<GroupEntity> findedGroup = groupRepository.findById(groupId);
+        var foundGroup = groupRepository.findById(groupId)
+                .orElseThrow(() -> new EntityNotFoundException("Group is not found"));
 
-        //TODO
-        if (findedGroup.isEmpty()){
-            return null;
-        }
+        var entities = studentRepository.findStudentsByGroup(foundGroup);
 
-        List<StudentEntity> entities = studentRepository.findStudentsByGroup(findedGroup.get());
-
-        List<StudentActivityDto> dtos = entities.stream()
+        var dtos = entities.stream()
                 .map(mapper::mapToWithActivityDto)
                 .collect(Collectors.toList());
 
@@ -70,25 +66,19 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentFullDto findById(Long id) {
-        Optional<StudentEntity> finded = studentRepository.findById(id);
-        if (finded.isEmpty()){
-            throw new EntityNotFoundException("Student is not found");
-        }
+        var found = studentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Student is not found"));
 
-        return mapper.mapToDto(finded.get());
+        return mapper.mapToDto(found);
     }
 
     public List<StudentFullDto> findStudentsByGroup(Long groupId){
-        Optional<GroupEntity> findedGroup = groupRepository.findById(groupId);
+        var foundGroup = groupRepository.findById(groupId)
+                .orElseThrow(() -> new EntityNotFoundException("Group is not found"));
 
-        //TODO
-        if (findedGroup.isEmpty()){
-            return null;
-        }
+        var entities = studentRepository.findStudentsByGroup(foundGroup);
 
-        List<StudentEntity> entities = studentRepository.findStudentsByGroup(findedGroup.get());
-
-        List<StudentFullDto> dtos = entities.stream()
+        var dtos = entities.stream()
                 .map(mapper::mapToDto)
                 .collect(Collectors.toList());
 
@@ -97,76 +87,58 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentFullDto findStudentByUser(Long userId) {
-        Optional<UserEntity> findedUser = userRepository.findById(userId);
+        var foundUser = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User is not found"));
 
-        //TODO
-        if (findedUser.isEmpty()){
-            return null;
-        }
+        var foundStudent = studentRepository.findStudentByUser(foundUser);
 
-        StudentEntity findedStudent = studentRepository.
-                findStudentByUser(findedUser.get());
-
-        return mapper.mapToDto(findedStudent);
+        return mapper.mapToDto(foundStudent);
     }
 
     public StudentFullDto create(StudentCreateDto createDto){
-        StudentEntity student = mapper.mapToEntity(createDto);
+        var student = mapper.mapToEntity(createDto);
 
-        Optional<RoleEntity> findedRole = roleRepository.findById(createDto.getUser().getRoleId());
-        if (findedRole.isEmpty()){
-            throw new EntityNotFoundException("Role is not found");
-        }
-        student.getUser().setRole(findedRole.get());
+        var foundRole = roleRepository.findById(createDto.getUser().getRoleId())
+                .orElseThrow(() -> new EntityNotFoundException("Role is not found"));
+        student.getUser().setRole(foundRole);
 
-        Optional<GroupEntity> findedGroup = groupRepository.findById(createDto.getGroupId());
-        if (findedGroup.isEmpty()){
-            throw new EntityNotFoundException("Group is not found");
-        }
-        student.setGroup(findedGroup.get());
+        var foundGroup = groupRepository.findById(createDto.getGroupId())
+                        .orElseThrow(() -> new EntityNotFoundException("Group is not found"));
+        student.setGroup(foundGroup);
 
-        Optional<EducationFormEntity> findedEducationForm = educationFormRepository.findById(
-                createDto.getEducationFormId());
-        if (findedEducationForm.isEmpty()){
-            throw new EntityNotFoundException("Education form is not found");
-        }
-        student.setEducationForm(findedEducationForm.get());
+        var foundEducationForm = educationFormRepository.findById(createDto.getEducationFormId())
+                        .orElseThrow(() -> new EntityNotFoundException("Education form is not found"));
+        student.setEducationForm(foundEducationForm);
 
         return mapper.mapToDto(studentRepository.save(student));
     }
 
     public StudentFullDto update(StudentUpdateDto updateDto){
-        Optional<StudentEntity> studentEntity = studentRepository.findById(updateDto.getId());
-        StudentEntity studentToUpdate = studentEntity.orElseThrow(() -> new EntityNotFoundException("Student is not found"));
+        var foundStudent = studentRepository.findById(updateDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Student is not found"));
 
-        Optional<EducationFormEntity> findedEducationForm = educationFormRepository.findById(updateDto.getEducationFormId());
-        if (findedEducationForm.isEmpty()){
-            throw new EntityNotFoundException("Education form is not found");
-        }
-        studentToUpdate.setEducationForm(findedEducationForm.get());
+        var foundEducationForm = educationFormRepository.findById(updateDto.getEducationFormId())
+                .orElseThrow(() -> new EntityNotFoundException("Education form is not found"));
+        foundStudent.setEducationForm(foundEducationForm);
 
-        Optional<GroupEntity> findedGroup = groupRepository.findById(updateDto.getGroupId());
-        if (findedGroup.isEmpty()){
-            throw new EntityNotFoundException("Group is not found");
-        }
-        studentToUpdate.setGroup(findedGroup.get());
+        var foundGroup = groupRepository.findById(updateDto.getGroupId())
+                .orElseThrow(() -> new EntityNotFoundException("Group is not found"));
+        foundStudent.setGroup(foundGroup);
 
-        Optional<RoleEntity> findedRole = roleRepository.findById(updateDto.getUser().getRoleId());
-        if (findedRole.isEmpty()){
-            throw new EntityNotFoundException("Role is not found");
-        }
-        studentToUpdate.getUser().setRole(findedRole.get());
+        var foundRole = roleRepository.findById(updateDto.getUser().getRoleId())
+                .orElseThrow(() -> new EntityNotFoundException("Role is not found"));
+        foundStudent.getUser().setRole(foundRole);
 
-        studentToUpdate.getUser().setLogin(updateDto.getUser().getLogin());
-        studentToUpdate.getUser().setPassword(updateDto.getUser().getPassword());
-        studentToUpdate.getUser().getPerson().setName(updateDto.getUser().getPerson().getName());
-        studentToUpdate.getUser().getPerson().setPatronymic(updateDto.getUser().getPerson().getPatronymic());
-        studentToUpdate.getUser().getPerson().setSurname(updateDto.getUser().getPerson().getSurname());
-        studentToUpdate.setPhone(updateDto.getPhone());
-        studentToUpdate.setRegistrationAddress(updateDto.getRegistrationAddress());
-        studentToUpdate.setResidentialAddress(updateDto.getResidentialAddress());
+        foundStudent.getUser().setLogin(updateDto.getUser().getLogin());
+        foundStudent.getUser().setPassword(updateDto.getUser().getPassword());
+        foundStudent.getUser().getPerson().setName(updateDto.getUser().getPerson().getName());
+        foundStudent.getUser().getPerson().setPatronymic(updateDto.getUser().getPerson().getPatronymic());
+        foundStudent.getUser().getPerson().setSurname(updateDto.getUser().getPerson().getSurname());
+        foundStudent.setPhone(updateDto.getPhone());
+        foundStudent.setRegistrationAddress(updateDto.getRegistrationAddress());
+        foundStudent.setResidentialAddress(updateDto.getResidentialAddress());
 
-        return mapper.mapToDto(studentRepository.save(studentToUpdate));
+        return mapper.mapToDto(studentRepository.save(foundStudent));
     }
 
     @Override

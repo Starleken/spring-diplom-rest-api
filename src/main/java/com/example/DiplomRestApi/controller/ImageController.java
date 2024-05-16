@@ -18,7 +18,6 @@ public class ImageController {
 
     private final ImageService imageService;
 
-    //TODO
     @GetMapping("/{imageName}")
     public ResponseEntity<Resource> loadImage(@PathVariable String imageName) {
         try{

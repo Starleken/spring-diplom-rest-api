@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "jwt.access.secretKey",
+      "type": "java.lang.String",
+      "description": "Secret key for generating access token."
+    },
+    {
+      "name": "jwt.access.ttlMinutes",
+      "type": "java.lang.String",
+      "description": "Time to live for access token."
+    },
+    {
+      "name": "jwt.refresh.secretKey",
+      "type": "java.lang.String",
+      "description": "Secret key for generating refresh token."
+    },
+    {
+      "name": "jwt.refresh.ttlMinutes",
+      "type": "java.lang.String",
+      "description": "Time to live for refresh token."
+    }
+  ]
+}

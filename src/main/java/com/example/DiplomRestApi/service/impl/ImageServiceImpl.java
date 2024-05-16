@@ -53,7 +53,6 @@ public class ImageServiceImpl implements ImageService {
         try{
             Files.delete(path);
         } catch (Exception ex){
-            //TODO
         }
 
     }

@@ -11,5 +11,7 @@
     <include file="classpath:liquibase/changes/change-1.5.xml"/>
     <include file="classpath:liquibase/changes/change-1.6.xml"/>
     <include file="classpath:liquibase/changes/change-1.7.xml"/>
+    <include file="classpath:liquibase/changes/change-1.8-add-tokens.xml"/>
+    <include file="classpath:liquibase/changes/change-1.9-update-tokens.xml"/>
 
 </databaseChangeLog>

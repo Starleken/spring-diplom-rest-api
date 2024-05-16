@@ -1,0 +1,22 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1.0.0" author="Starleken">
+        <sql>
+            create table refresh_tokens
+            (
+                id      bigint auto_increment
+                    primary key,
+                created_at bigint         not null,
+                token   varchar(255) not null,
+                status  varchar(255) not null,
+                user_id bigint       not null,
+                constraint FK_refresh_tokens_user_id
+                    foreign key (user_id) references users (id)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
