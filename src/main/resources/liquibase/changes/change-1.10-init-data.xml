@@ -1,0 +1,21 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1.0.0" author="Starleken">
+        <sql>
+            insert into persons (name, patronymic, surname) values ('Максим', 'Евгеньевич', 'Журавлевич');
+            insert into persons (name, patronymic, surname) values ('Геннадий', 'Степанович', 'Кончаков');
+            insert into persons (name, patronymic, surname) values ('Кирилл', 'Романович', 'Вилесов');
+
+            insert into users (login, password, person_id, role_id) values ('starleken', 'starleken', '1', '3');
+            insert into users (login, password, person_id, role_id) values ('curator', 'curator', '2', '2');
+            insert into users (login, password, person_id, role_id) values ('admin', 'admin', '3', '1');
+
+            insert into students (education_form_id, group_id, user_id, phone) values ('1', '1', '1', '77777777777');
+            insert into curators (user_id, group_id) values ('2', '1');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
