@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private static final String[] WHITE_LIST_URL =  {"/users/login",
-            "/users/refresh", "/image"};
+            "/users/refresh", "/image/**"};
 
     private final JwtFilter filter;
     private final AuthenticationProvider authenticationProvider;
